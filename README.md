@@ -10,7 +10,7 @@
 
 * [使用jupyter书写spark代码](./环境搭建/Spark配置jputer.md)
 
-#### #### 访问设置
+#### 访问设置
 
 * [配置livy访问spark](./livy说明文档/livy配置.md)
 * [livy参考文档](./livy说明文档/livy使用说明.md)
