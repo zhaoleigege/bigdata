@@ -1,0 +1,705 @@
+
+<!DOCTYPE html>
+<html>
+  <!-- OriginalSrc: https://gerardnico.com/db/spark/livy -->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Spark - Livy (Rest API) [Gerardnico]</title>
+    
+<link rel="stylesheet" type="text/css" href="assets/1545794497-69bc754017c07a907a4017d9f7ec5e19.css">
+
+<link rel="stylesheet" href="assets/1545794497-f77bebc70541b347233c46d600dd9556.css">
+
+<link href="assets/1545794497-83b056dc9579d386ae9d98bd7d80b4cc.css" rel="stylesheet">
+<style>
+
+</style>
+<style>
+@media print {#ghostery-purple-box {display:none !important}}
+</style>
+<style>
+.iris-picker{display:block;position:relative}.iris-picker,.iris-picker *{-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input+.iris-picker{margin-top:4px}.iris-error{background-color:#ffafaf}.iris-border{border-radius:3px;border:1px solid #aaa;width:200px;background-color:#fff}.iris-picker-inner{position:absolute;top:0;right:0;left:0;bottom:0}.iris-border .iris-picker-inner{top:10px;right:10px;left:10px;bottom:10px}.iris-picker .iris-square-inner{position:absolute;left:0;right:0;top:0;bottom:0}.iris-picker .iris-square,.iris-picker .iris-slider,.iris-picker .iris-square-inner,.iris-picker .iris-palette{border-radius:3px;box-shadow:inset 0 0 5px rgba(0,0,0,.4);height:100%;width:12.5%;float:left;margin-right:5%}.iris-picker .iris-square{width:76%;margin-right:10%;position:relative}.iris-picker .iris-square-inner{width:auto;margin:0}.iris-ie-9 .iris-square,.iris-ie-9 .iris-slider,.iris-ie-9 .iris-square-inner,.iris-ie-9 .iris-palette{box-shadow:none;border-radius:0}.iris-ie-9 .iris-square,.iris-ie-9 .iris-slider,.iris-ie-9 .iris-palette{outline:1px solid rgba(0,0,0,.1)}.iris-ie-lt9 .iris-square,.iris-ie-lt9 .iris-slider,.iris-ie-lt9 .iris-square-inner,.iris-ie-lt9 .iris-palette{outline:1px solid #aaa}.iris-ie-lt9 .iris-square .ui-slider-handle{outline:1px solid #aaa;background-color:#fff;-ms-filter:"alpha(Opacity=30)"}.iris-ie-lt9 .iris-square .iris-square-handle{background:0;border:3px solid #fff;-ms-filter:"alpha(Opacity=50)"}.iris-picker .iris-strip{margin-right:0;position:relative}.iris-picker .iris-strip .ui-slider-handle{position:absolute;background:0;margin:0;right:-3px;left:-3px;border:4px solid #aaa;border-width:4px 3px;width:auto;height:6px;border-radius:4px;box-shadow:0 1px 2px rgba(0,0,0,.2);opacity:.9;z-index:5;cursor:ns-resize}.iris-strip .ui-slider-handle:before{content:" ";position:absolute;left:-2px;right:-2px;top:-3px;bottom:-3px;border:2px solid #fff;border-radius:3px}.iris-picker .iris-slider-offset{position:absolute;top:11px;left:0;right:0;bottom:-3px;width:auto;height:auto;background:transparent;border:0;border-radius:0}.iris-picker .iris-square-handle{background:transparent;border:5px solid #aaa;border-radius:50%;border-color:rgba(128,128,128,.5);box-shadow:none;width:12px;height:12px;position:absolute;left:-10px;top:-10px;cursor:move;opacity:1;z-index:10}.iris-picker .ui-state-focus .iris-square-handle{opacity:.8}.iris-picker .iris-square-handle:hover{border-color:#999}.iris-picker .iris-square-value:focus .iris-square-handle{box-shadow:0 0 2px rgba(0,0,0,.75);opacity:.8}.iris-picker .iris-square-handle:hover::after{border-color:#fff}.iris-picker .iris-square-handle::after{position:absolute;bottom:-4px;right:-4px;left:-4px;top:-4px;border:3px solid #f9f9f9;border-color:rgba(255,255,255,.8);border-radius:50%;content:" "}.iris-picker .iris-square-value{width:8px;height:8px;position:absolute}.iris-ie-lt9 .iris-square-value,.iris-mozilla .iris-square-value{width:1px;height:1px}.iris-palette-container{position:absolute;bottom:0;left:0;margin:0;padding:0}.iris-border .iris-palette-container{left:10px;bottom:10px}.iris-picker .iris-palette{margin:0;cursor:pointer}.iris-square-handle,.ui-slider-handle{border:0;outline:0}
+</style>
+<style>
+ :root .adsbygoogle {display:none !important;}
+</style>
+<style>
+.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+
+</style>
+<style>
+#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+
+</style>
+<style>
+.MathJax_Preview .MJXf-math {color: inherit!important}
+
+</style>
+<style>
+.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+
+</style>
+<style>
+#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+
+</style>
+<style>
+.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+
+</style>
+<style>
+object,embed{                -webkit-animation-duration:.001s;-webkit-animation-name:playerInserted;                -ms-animation-duration:.001s;-ms-animation-name:playerInserted;                -o-animation-duration:.001s;-o-animation-name:playerInserted;                animation-duration:.001s;animation-name:playerInserted;}                @-webkit-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @-ms-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @-o-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}
+</style>
+<style>
+.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+
+</style>
+
+    <style class="mx-wc-style">
+      .mx-wc-main img {max-width: 100%;}
+      .mx-wc-main{
+        box-sizing: content-box;
+        background-color: rgb(255, 255, 255) !important;
+        margin: 0 auto;
+        max-width: 900px;
+        padding: 15px 15px 80px 15px;
+      }
+
+      .mx-wc-main > .clipping-information{
+        text-align: left;
+        margin-top: 20px;
+        background-color: #eeeeee !important;
+        padding: 15px;
+        border-radius: 4px;
+        color: #333;
+        font-size: 14px !important;
+        line-height: 22px !important;
+      }
+      .mx-wc-main > .clipping-information a {
+        color: blue !important;
+        text-decoration: underline !important;
+      }
+      .mx-wc-main > .clipping-information label {
+        display: inline;
+        text-transform: none;
+      }
+      .mx-wc-main > .clipping-information label > code {
+        padding: 2px 8px;
+        background-color: rgba(200, 200, 200, 0.7)!important;
+        font-size: 14px;
+      }
+
+    </style>
+  </head>
+  <body style="background-color: #464646 !important; min-height: 100%; height: auto;" id="" class="">
+    <div class="mx-wc-main">
+      <DIV class="container dokuwiki" style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><DIV class="row" style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><div role="main" class="col-md-9 mx-wc-selected-elem" style="float: none; position: relative; top: 0px; left: 0px; margin: 0px; flex: unset; width: 100%; max-width: 100%; box-sizing: border-box;">
+
+        <!-- BREADCRUMBS -->
+        
+
+        <!-- The content: Show, Edit, .... -->
+                        <!-- wikipage start $prependTOC=false -->
+		
+
+        <!-- Add a p around the content to enable the reader view in Mozilla -->
+        <!-- https://github.com/mozilla/readability -->
+        <!-- But Firefox close the P because they must contain only inline element ???-->
+        
+<h1 class="sectionedit1" id="spark_-_livy_rest_api">Spark - Livy (Rest API)</h1>
+<ol class="breadcrumb rplus">
+<li>
+<a href="https://gerardnico.com/start" title="start"><span class="nicon_home" aria-hidden="true"></span></a></li>
+<li><a href="https://gerardnico.com/db/start" title="Database" class="navlink"> &gt; Database</a></li>
+<li><a href="https://gerardnico.com/db/spark/spark" title="Spark" class="navlink"> &gt; Spark</a></li>
+
+</ol>
+<div class="level1">
+
+</div>
+<!-- TOC START -->
+<div id="dw__toc" class="dw__toc">
+<h3 class="toggle open" style="cursor: pointer;"><strong><span>−</span></strong>Table of Contents</h3>
+<div aria-expanded="true" style="">
+
+<ul class="toc">
+<li class="level1"><div class="li"><a href="#about">1 - About</a></div></li>
+<li class="level1"><div class="li"><a href="#articles_related">2 - Articles Related</a></div></li>
+<li class="level1"><div class="li"><a href="#management">3 - Management</a></div>
+<ul class="toc">
+<li class="level2"><div class="li"><a href="#installation">3.1 - Installation</a></div></li>
+<li class="level2"><div class="li"><a href="#alive">3.2 - Alive</a></div></li>
+<li class="level2"><div class="li"><a href="#api">3.3 - API</a></div>
+<ul class="toc">
+<li class="level3"><div class="li"><a href="#session">3.3.1 - Session</a></div></li>
+<li class="level3"><div class="li"><a href="#statement">3.3.2 - Statement</a></div></li>
+<li class="level3"><div class="li"><a href="#batch">3.3.3 - Batch</a></div></li>
+</ul>
+</li>
+<li class="level2"><div class="li"><a href="#submit_application">3.4 - Submit application</a></div></li>
+<li class="level2"><div class="li"><a href="#start_and_stop">3.5 - Start and stop</a></div></li>
+<li class="level2"><div class="li"><a href="#configuration">3.6 - Configuration</a></div>
+<ul class="toc">
+<li class="level3"><div class="li"><a href="#livyconf">3.6.1 - livy.conf</a></div></li>
+<li class="level3"><div class="li"><a href="#livy-env-sh">3.6.2 - livy-env-sh</a></div></li>
+</ul>
+</li>
+<li class="level2"><div class="li"><a href="#log1">3.7 - Log</a></div></li>
+<li class="level2"><div class="li"><a href="#process">3.8 - Process</a></div></li>
+</ul>
+</li>
+<li class="level1"><div class="li"><a href="#documentationreference">4 - Documentation / Reference</a></div></li>
+</ul>
+</div>
+</div>
+<!-- TOC END -->
+
+<h2 class="sectionedit2" id="about">1 - About</h2>
+<div class="level2">
+
+<p>
+Livy is an Open Source REST Service for Apache Spark (Apache License) 
+</p>
+
+<p>
+It's used to <a href="https://gerardnico.com/db/spark/submit" class="wikilink1" title="db:spark:submit">submit</a> remote <a href="https://gerardnico.com/db/spark/job" class="wikilink1" title="db:spark:job">job</a>.
+</p>
+
+</div>
+
+<h2 class="sectionedit3" id="articles_related">2 - Articles Related</h2>
+<div class="level2">
+<div id="plugin__backlinks">
+<ul class="idx"><li><div class="li"><a href="https://gerardnico.com/db/hortonworks/installation" class="wikilink1" title="db:hortonworks:installation">Hortonworks - Hortonworks Data Platform 2-6-4 (HDP) installation on Docker Windows 7</a></div></li><li><div class="li"><a href="https://gerardnico.com/db/spark/app" class="wikilink1" title="db:spark:app">Spark - Application</a></div></li><li><div class="li"><a href="https://gerardnico.com/db/spark/client" class="wikilink1" title="db:spark:client">Spark - Client</a></div></li><li><div class="li"><a href="https://gerardnico.com/db/spark/sparklyr/connection" class="wikilink1" title="db:spark:sparklyr:connection">Sparklyr - Connection (Context)</a></div></li><li><div class="li"><a href="https://gerardnico.com/db/spark/sparklyr/installation" class="wikilink1" title="db:spark:sparklyr:installation">Sparklyr - Installation of a dev environment</a></div></li><li><div class="li"><a href="https://gerardnico.com/db/spark/submit" class="wikilink1" title="db:spark:submit">Spark - Submit Application</a></div></li><li><div class="li"><a href="https://gerardnico.com/ide/jupyter/spark" class="wikilink1" title="ide:jupyter:spark">Jupyter - SparkMagic</a></div></li></ul></div>
+
+</div>
+
+				
+				
+<h2 class="sectionedit4" id="management">3 - Management</h2>
+<div class="level2">
+
+</div>
+
+<h3 class="sectionedit5" id="installation">3.1 - Installation</h3>
+<div class="level3">
+<ul>
+<li class="level1"><div class="li"> <a href="https://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.6.4/bk_command-line-installation/content/ch21s06s03.html" class="urlextern" target="_blank" title="https://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.6.4/bk_command-line-installation/content/ch21s06s03.html" rel="noopener">Hortonworks</a></div>
+</li>
+</ul>
+
+</div>
+
+<h3 class="sectionedit6" id="alive">3.2 - Alive</h3>
+<div class="level3">
+<pre class="code bash">curl <span class="re5">-u</span> admin <span class="re5">-G</span> <span class="st0">"http://10.0.0.11:8998/"</span></pre>
+
+</div>
+
+<h3 class="sectionedit7" id="api">3.3 - API</h3>
+<div class="level3">
+
+<p>
+See <a href="https://github.com/cloudera/livy#rest-api" class="interwiki iw_github" title="https://github.com/cloudera/livy#rest-api">Rest API</a>
+</p>
+
+</div>
+
+<h4 class="sectionedit8" id="session">3.3.1 - Session</h4>
+<div class="level4">
+
+</div>
+
+<h5 class="sectionedit9" id="list">3.3.1.1 - List</h5>
+<div class="level5">
+<ul>
+<li class="level1"><div class="li"> Get: Returns all the active interactive sessions.</div>
+</li>
+</ul>
+<pre class="code">GET /sessions</pre>
+<pre class="code file javascript"><span class="br0">{</span>
+	<span class="st0">"from"</span><span class="sy0">:</span><span class="nu0">0</span><span class="sy0">,</span>
+	<span class="st0">"total"</span><span class="sy0">:</span><span class="nu0">2</span><span class="sy0">,</span>
+	<span class="st0">"sessions"</span><span class="sy0">:</span>
+		<span class="br0">[</span>
+			<span class="br0">{</span><span class="st0">"id"</span><span class="sy0">:</span><span class="nu0">0</span><span class="sy0">,</span><span class="st0">"appId"</span><span class="sy0">:</span><span class="st0">"application_1525336261063_0027"</span><span class="sy0">,</span><span class="st0">"owner"</span><span class="sy0">:</span><span class="kw2">null</span><span class="sy0">,</span><span class="st0">"proxyUser"</span><span class="sy0">:</span><span class="kw2">null</span><span class="sy0">,</span><span class="st0">"state"</span><span class="sy0">:</span><span class="st0">"dead"</span><span class="sy0">,</span><span class="st0">"kind"</span><span class="sy0">:</span><span class="st0">"spark"</span><span class="sy0">,</span><span class="st0">"appInfo"</span><span class="sy0">:</span><span class="br0">{</span><span class="st0">"driverLogUrl"</span><span class="sy0">:</span><span class="kw2">null</span><span class="sy0">,</span><span class="st0">"sparkUiUrl"</span><span class="sy0">:</span><span class="st0">"http://hn1:8088/cluster/app/application_1525336261063_0027"</span><span class="br0">}</span><span class="sy0">,</span><span class="st0">"log"</span><span class="sy0">:</span><span class="br0">[</span><span class="st0">"YARN Diagnostics:"</span><span class="sy0">,</span><span class="st0">"Application killed by user."</span><span class="br0">]</span><span class="br0">}</span><span class="sy0">,</span>
+			<span class="br0">{</span><span class="st0">"id"</span><span class="sy0">:</span><span class="nu0">1</span><span class="sy0">,</span><span class="st0">"appId"</span><span class="sy0">:</span><span class="st0">"application_1525370262995_5114"</span><span class="sy0">,</span><span class="st0">"owner"</span><span class="sy0">:</span><span class="kw2">null</span><span class="sy0">,</span><span class="st0">"proxyUser"</span><span class="sy0">:</span><span class="kw2">null</span><span class="sy0">,</span><span class="st0">"state"</span><span class="sy0">:</span><span class="st0">"dead"</span><span class="sy0">,</span><span class="st0">"kind"</span><span class="sy0">:</span><span class="st0">"spark"</span><span class="sy0">,</span><span class="st0">"appInfo"</span><span class="sy0">:</span><span class="br0">{</span><span class="st0">"driverLogUrl"</span><span class="sy0">:</span><span class="kw2">null</span><span class="sy0">,</span><span class="st0">"sparkUiUrl"</span><span class="sy0">:</span><span class="st0">"http://hn1:8088/proxy/application_1525370262995_5114/"</span><span class="br0">}</span><span class="sy0">,</span><span class="st0">"log"</span><span class="sy0">:</span><span class="br0">[</span><span class="br0">]</span><span class="br0">}</span>
+		<span class="br0">]</span>
+<span class="br0">}</span></pre>
+<ul>
+<li class="level1"><div class="li"> Returns the session information.</div>
+</li>
+</ul>
+<pre class="code">GET /sessions/{sessionId}</pre>
+<pre class="code file javascript"><span class="br0">{</span>
+  <span class="st0">"id"</span><span class="sy0">:</span><span class="nu0">1</span><span class="sy0">,</span>
+  <span class="st0">"appId"</span><span class="sy0">:</span><span class="st0">"application_1525370262995_5114"</span><span class="sy0">,</span>
+  <span class="st0">"owner"</span><span class="sy0">:</span><span class="kw2">null</span><span class="sy0">,</span>
+  <span class="st0">"proxyUser"</span><span class="sy0">:</span><span class="kw2">null</span><span class="sy0">,</span>
+  <span class="st0">"state"</span><span class="sy0">:</span><span class="st0">"dead"</span><span class="sy0">,</span>
+  <span class="st0">"kind"</span><span class="sy0">:</span><span class="st0">"spark"</span><span class="sy0">,</span>
+  <span class="st0">"appInfo"</span><span class="sy0">:</span> <span class="br0">{</span>
+    <span class="st0">"driverLogUrl"</span><span class="sy0">:</span><span class="kw2">null</span><span class="sy0">,</span>
+    <span class="st0">"sparkUiUrl"</span><span class="sy0">:</span><span class="st0">"http://hn1:8088/proxy/application_1525370262995_5114/"</span>
+    <span class="br0">}</span><span class="sy0">,</span>
+  <span class="st0">"log"</span><span class="sy0">:</span><span class="br0">[</span><span class="br0">]</span>
+<span class="br0">}</span></pre>
+
+</div>
+
+<h5 class="sectionedit10" id="state">3.3.1.2 - State</h5>
+<div class="level5">
+<ul>
+<li class="level1"><div class="li"> Returns the state of session. See possible returns value: <a href="https://github.com/cloudera/livy#session-state" class="interwiki iw_github" title="https://github.com/cloudera/livy#session-state">cloudera/livy#session-state</a></div>
+</li>
+</ul>
+<pre class="code">GET /sessions/{sessionId}/state</pre>
+<pre class="code file javascript"><span class="br0">{</span>
+  <span class="st0">"id"</span><span class="sy0">:</span><span class="nu0">1</span><span class="sy0">,</span>
+  <span class="st0">"state"</span><span class="sy0">:</span><span class="st0">"dead"</span>
+<span class="br0">}</span></pre>
+
+</div>
+
+<h5 class="sectionedit11" id="create_session">3.3.1.3 - Create Session</h5>
+<div class="level5">
+<ul>
+<li class="level1"><div class="li"> Creates a new interactive Scala, Python, or R shell in the cluster and the return the id. See all kind of session: <a href="https://github.com/cloudera/livy#session-kind" class="interwiki iw_github" title="https://github.com/cloudera/livy#session-kind">cloudera/livy#session-kind</a></div>
+</li>
+</ul>
+<pre class="code">POST /sessions</pre>
+<pre class="code python">host <span class="sy0">=</span> ‘http://localhost:<span class="nu0">8998</span>’
+<span class="co1"># SparkShell</span>
+data <span class="sy0">=</span> <span class="br0">{</span>‘kind’: ‘spark’<span class="br0">}</span>
+headers <span class="sy0">=</span> <span class="br0">{</span>‘Content-Type’: ‘application/json’<span class="br0">}</span>
+r <span class="sy0">=</span> requests.<span class="me1">post</span><span class="br0">(</span>host + ‘/sessions’<span class="sy0">,</span> data<span class="sy0">=</span>json.<span class="me1">dumps</span><span class="br0">(</span>data<span class="br0">)</span><span class="sy0">,</span> headers<span class="sy0">=</span>headers<span class="br0">)</span>
+r.<span class="me1">json</span><span class="br0">(</span><span class="br0">)</span></pre>
+
+<p>
+where:
+</p>
+<ul>
+<li class="level1"><div class="li"> <a href="https://github.com/cloudera/livy#request-body" class="interwiki iw_github" title="https://github.com/cloudera/livy#request-body">Request parameters</a> may be:</div>
+</li>
+</ul>
+<div class="table sectionedit12 table-responsive"><table class="inline table table-hover table-striped">
+	<thead>
+	<tr class="row0">
+		<th class="col0"> name </th><th class="col1"> description </th><th class="col2"> type </th>
+	</tr>
+	</thead>
+	<tbody><tr class="row1">
+		<td class="col0"> kind </td><td class="col1"> The session kind (required) </td><td class="col2"> session kind </td>
+	</tr>
+	<tr class="row2">
+		<td class="col0"> proxyUser </td><td class="col1"> User to impersonate when starting the session </td><td class="col2"> string </td>
+	</tr>
+	<tr class="row3">
+		<td class="col0"> jars </td><td class="col1"> jars to be used in this session </td><td class="col2"> List of string </td>
+	</tr>
+	<tr class="row4">
+		<td class="col0"> pyFiles </td><td class="col1"> Python files to be used in this session </td><td class="col2"> List of string </td>
+	</tr>
+	<tr class="row5">
+		<td class="col0"> files </td><td class="col1"> files to be used in this session </td><td class="col2"> List of string </td>
+	</tr>
+	<tr class="row6">
+		<td class="col0"> driverMemory </td><td class="col1"> Amount of memory to use for the driver process </td><td class="col2"> string </td>
+	</tr>
+	<tr class="row7">
+		<td class="col0"> driverCores </td><td class="col1"> Number of cores to use for the driver process </td><td class="col2"> int </td>
+	</tr>
+	<tr class="row8">
+		<td class="col0"> executorMemory </td><td class="col1"> Amount of memory to use per executor process </td><td class="col2"> string </td>
+	</tr>
+	<tr class="row9">
+		<td class="col0"> executorCores </td><td class="col1"> Number of cores to use for each executor </td><td class="col2"> int </td>
+	</tr>
+	<tr class="row10">
+		<td class="col0"> numExecutors </td><td class="col1"> Number of executors to launch for this session </td><td class="col2"> int </td>
+	</tr>
+	<tr class="row11">
+		<td class="col0"> archives </td><td class="col1"> Archives to be used in this session </td><td class="col2"> List of string </td>
+	</tr>
+	<tr class="row12">
+		<td class="col0"> queue </td><td class="col1"> The name of the YARN queue to which submitted </td><td class="col2"> string </td>
+	</tr>
+	<tr class="row13">
+		<td class="col0"> name </td><td class="col1"> The name of this session </td><td class="col2"> string </td>
+	</tr>
+	<tr class="row14">
+		<td class="col0"> conf </td><td class="col1"> Spark configuration properties </td><td class="col2"> Map of key=val </td>
+	</tr>
+	<tr class="row15">
+		<td class="col0"> heartbeatTimeoutInSecond </td><td class="col1"> Timeout in second to which session be orphaned </td><td class="col2"> int </td>
+	</tr>
+</tbody></table></div>
+
+<p>
+Example of output:
+</p>
+<pre class="file">{u’state’: u’starting’, u’id’: 0, u’kind’: u’spark’}</pre>
+
+</div>
+
+<h5 class="sectionedit13" id="kill">3.3.1.4 - Kill</h5>
+<div class="level5">
+<pre class="code">DELETE /sessions/{sessionId}</pre>
+
+</div>
+
+<h5 class="sectionedit14" id="log">3.3.1.5 - Log</h5>
+<div class="level5">
+
+<p>
+Gets the log lines from this session.
+</p>
+<pre class="code">GET /sessions/{sessionId}/log</pre>
+<pre class="code file javascript"><span class="br0">{</span><span class="st0">"id"</span><span class="sy0">:</span><span class="nu0">1</span><span class="sy0">,</span><span class="st0">"from"</span><span class="sy0">:</span><span class="nu0">0</span><span class="sy0">,</span><span class="st0">"total"</span><span class="sy0">:</span><span class="nu0">0</span><span class="sy0">,</span><span class="st0">"log"</span><span class="sy0">:</span><span class="br0">[</span><span class="br0">]</span><span class="br0">}</span></pre>
+
+</div>
+
+<h4 class="sectionedit15" id="statement">3.3.2 - Statement</h4>
+<div class="level4">
+
+</div>
+
+<h5 class="sectionedit16" id="list1">3.3.2.1 - List</h5>
+<div class="level5">
+<ul>
+<li class="level1"><div class="li"> All:  Returns all the statements in a session.</div>
+</li>
+</ul>
+<pre class="code">GET /sessions/{sessionId}/statements</pre>
+<ul>
+<li class="level1"><div class="li"> one</div>
+</li>
+</ul>
+<pre class="code">GET /sessions/{sessionId}/statements/{statementId}</pre>
+
+</div>
+
+<h5 class="sectionedit17" id="submit">3.3.2.2 - Submit</h5>
+<div class="level5">
+
+<p>
+Runs a statement in a session.
+</p>
+<pre class="code">POST /sessions/{sessionId}/statements</pre>
+<pre class="code python">data <span class="sy0">=</span> <span class="br0">{</span>‘<span class="kw3">code</span>’: ‘sc.<span class="me1">parallelize</span><span class="br0">(</span><span class="nu0">1</span> to <span class="nu0">10</span><span class="br0">)</span>.<span class="me1">count</span><span class="br0">(</span><span class="br0">)</span>’<span class="br0">}</span>
+r <span class="sy0">=</span> requests.<span class="me1">post</span><span class="br0">(</span>statements_url<span class="sy0">,</span> data<span class="sy0">=</span>json.<span class="me1">dumps</span><span class="br0">(</span>data<span class="br0">)</span><span class="sy0">,</span> headers<span class="sy0">=</span>headers<span class="br0">)</span>
+r.<span class="me1">json</span><span class="br0">(</span><span class="br0">)</span></pre>
+<pre class="file">{u’output’: None, u’state’: u’running’, u’id’: 0}</pre>
+
+</div>
+
+<h5 class="sectionedit18" id="get_the_result">3.3.2.3 - Get the result</h5>
+<div class="level5">
+<pre class="code">GET /sessions/{sessionId}/statements/{statementId}</pre>
+<pre class="code python">statement_url <span class="sy0">=</span> host + r.<span class="me1">headers</span><span class="br0">[</span>‘location’<span class="br0">]</span>
+&nbsp;
+r <span class="sy0">=</span> requests.<span class="me1">get</span><span class="br0">(</span>statement_url<span class="sy0">,</span> headers<span class="sy0">=</span>headers<span class="br0">)</span>
+<span class="kw3">pprint</span>.<span class="kw3">pprint</span><span class="br0">(</span>r.<span class="me1">json</span><span class="br0">(</span><span class="br0">)</span><span class="br0">)</span></pre>
+<pre class="file">{u’id’: 0,
+ u’output’: {u’data’: {u’text/plain’: u’res0: Long = 10′},
+             u’execution_count’: 0,
+             u’status’: u’ok’},
+ u’state’: u’available’}</pre>
+
+</div>
+
+<h5 class="sectionedit19" id="cancel">3.3.2.4 - Cancel</h5>
+<div class="level5">
+<pre class="code">POST /sessions/{sessionId}/statements/{statementId}/cancel</pre>
+
+</div>
+
+<h4 class="sectionedit20" id="batch">3.3.3 - Batch</h4>
+<div class="level4">
+
+<p>
+There is also a batch of statement. See: <a href="https://github.com/cloudera/livy#get-batches" class="urlextern" target="_blank" title="https://github.com/cloudera/livy#get-batches" rel="noopener">https://github.com/cloudera/livy#get-batches</a>
+</p>
+
+</div>
+
+<h3 class="sectionedit21" id="submit_application">3.4 - Submit application</h3>
+<div class="level3">
+
+<p>
+<a href="https://gerardnico.com/db/spark/spark-submit" class="wikilink1" title="db:spark:spark-submit">Spark - Spark-submit</a>
+</p>
+<ul>
+<li class="level1"><div class="li"> master and deploy mode are not in the data because they are configured in the <a href="#conf" title="db:spark:livy ↵" class="wikilink1">configuration</a></div>
+</li>
+</ul>
+<pre class="code">POST /batches</pre>
+<pre class="code javascript"><span class="br0">{</span>
+&nbsp;
+ “className”<span class="sy0">:</span> “org.<span class="me1">apache</span>.<span class="me1">spark</span>.<span class="me1">examples</span>.<span class="me1">SparkPi</span>”<span class="sy0">,</span>
+&nbsp;
+ “executorMemory”<span class="sy0">:</span> “20g”<span class="sy0">,</span>
+&nbsp;
+ “args”<span class="sy0">:</span> <span class="br0">[</span><span class="nu0">2000</span><span class="br0">]</span><span class="sy0">,</span>
+&nbsp;
+ “file”<span class="sy0">:</span> “<span class="sy0">/</span>path<span class="sy0">/</span>to<span class="sy0">/</span>examples.<span class="me1">jar</span>”
+&nbsp;
+<span class="br0">}</span></pre>
+
+</div>
+
+<h3 class="sectionedit22" id="start_and_stop">3.5 - Start and stop</h3>
+<div class="level3">
+<ul>
+<li class="level1"><div class="li"> R: <a href="https://spark.rstudio.com/reference/livy_service/" class="urlextern" target="_blank" title="https://spark.rstudio.com/reference/livy_service/" rel="noopener">https://spark.rstudio.com/reference/livy_service/</a> </div>
+</li>
+</ul>
+<pre class="code bash"><span class="kw3">export</span> <span class="re2">SPARK_HOME</span>=<span class="sy0">/</span>usr<span class="sy0">/</span>lib<span class="sy0">/</span>spark
+<span class="kw3">export</span> <span class="re2">HADOOP_CONF_DIR</span>=<span class="sy0">/</span>etc<span class="sy0">/</span>hadoop<span class="sy0">/</span>conf
+<span class="co0">#  Livy uses the Spark configuration under SPARK_HOME by default. You can override the Spark configuration by setting the SPARK_CONF_DIR environment variable </span>
+<span class="kw3">export</span> <span class="re2">SAPRK_CONF_DIR</span>=<span class="re1">$SPARK_HOME</span><span class="sy0">/</span>conf
+&nbsp;
+.<span class="sy0">/</span>bin<span class="sy0">/</span>livy-server
+&nbsp;
+<span class="co0"># Hortonworks</span>
+<span class="co0"># /usr/hdp/&lt;hdp_version&gt;/livy2/bin/livy-server start</span></pre>
+
+</div>
+
+<h3 class="sectionedit23" id="configuration">3.6 - Configuration</h3>
+<div class="level3">
+
+<p>
+<code>LIVY_CONF_DIR</code> is by default is the conf directory under the Livy installation. Example: <code>/usr/bin/livy2/conf</code>
+</p>
+
+<p>
+The configuration of Livy goes through different file:
+</p>
+<ul>
+<li class="level1"><div class="li"> <code>livy.conf</code>: the server configuration</div>
+</li>
+<li class="level1"><div class="li"> <code>spark-blacklist.conf</code>: Spark configuration options that users are not allowed to override</div>
+</li>
+<li class="level1"><div class="li"> <code>log4j.properties</code>: configuration for Livy logging. See <a href="https://gerardnico.com/lang/java/log4j" class="wikilink1" title="lang:java:log4j">Java - Log4j</a></div>
+</li>
+<li class="level1"><div class="li"> livy-defaults</div>
+</li>
+<li class="level1"><div class="li"> livy-env-sh</div>
+</li>
+</ul>
+
+</div>
+
+<h4 class="sectionedit24" id="livyconf">3.6.1 - livy.conf</h4>
+<div class="level4">
+<dl class="file">
+<dt><a href="https://gerardnico.com/_export/code/db/spark/livy?codeblock=25" title="Download Snippet" class="mediafile mf_conf">livy.conf</a></dt>
+<dd><pre class="code file ini">livy.repl.enableHiveContext<span class="sy0">=</span><span class="re2">true</span>
+livy.server.port<span class="sy0">=</span><span class="re2">8998</span>
+livy.server.recovery.mode<span class="sy0">=</span><span class="re2">recovery</span>
+livy.server.recovery.state-store<span class="sy0">=</span><span class="re2">zookeeper</span>
+livy.server.recovery.state-store.url<span class="sy0">=</span><span class="re2">zk2:2181,zk3:2181,zk5:2181</span>
+livy.server.session.timeout<span class="sy0">=</span><span class="re2">2073600000</span>
+livy.server.yarn.app-lookup-timeout<span class="sy0">=</span><span class="re2">2m</span>
+livy.spark.master<span class="sy0">=</span><span class="re2">yarn-cluster</span></pre>
+</dd></dl>
+
+<p>
+where:
+</p>
+<ul>
+<li class="level1"><div class="li"> <a href="https://gerardnico.com/db/spark/master" class="wikilink1" title="db:spark:master">master</a> is <a href="https://gerardnico.com/db/hadoop/yarn/start" class="wikilink1" title="db:hadoop:yarn:start">Yarn</a></div>
+</li>
+</ul>
+
+<p>
+List of possible configuraton:
+</p>
+<ul>
+<li class="level1"><div class="li"> <a href="https://github.com/apache/incubator-livy/blob/master/conf/livy.conf.template" class="interwiki iw_github" title="https://github.com/apache/incubator-livy/blob/master/conf/livy.conf.template">livy.conf.template</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="https://github.com/cloudera/livy/blob/master/rsc/src/main/java/com/cloudera/livy/rsc/RSCConf.java" class="interwiki iw_github" title="https://github.com/cloudera/livy/blob/master/rsc/src/main/java/com/cloudera/livy/rsc/RSCConf.java">Rsc - RSCConf.java</a></div>
+</li>
+</ul>
+<pre class="file">livy.rsc.rpc.max.size</pre>
+<ul>
+<li class="level1"><div class="li"> <a href="https://github.com/cloudera/livy/blob/master/server/src/main/scala/com/cloudera/livy/LivyConf.scala" class="interwiki iw_github" title="https://github.com/cloudera/livy/blob/master/server/src/main/scala/com/cloudera/livy/LivyConf.scala">Server - LivyConf.scala</a></div>
+</li>
+</ul>
+
+</div>
+
+<h4 class="sectionedit25" id="livy-env-sh">3.6.2 - livy-env-sh</h4>
+<div class="level4">
+<dl class="code">
+<dt><a href="https://gerardnico.com/_export/code/db/spark/livy?codeblock=27" title="Download Snippet" class="mediafile mf_">livy-env-sh</a></dt>
+<dd><pre class="code bash"><span class="co0">#!/usr/bin/env bash</span>
+&nbsp;
+<span class="kw3">export</span> <span class="re2">SPARK_HOME</span>=<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>current<span class="sy0">/</span>spark2-client
+<span class="kw3">export</span> <span class="re2">HADOOP_CONF_DIR</span>=<span class="sy0">/</span>etc<span class="sy0">/</span>hadoop<span class="sy0">/</span>conf
+<span class="kw3">export</span> <span class="re2">LIVY_LOG_DIR</span>=<span class="sy0">/</span>var<span class="sy0">/</span>log<span class="sy0">/</span>livy
+<span class="kw3">export</span> <span class="re2">LIVY_MAX_LOG_FILES</span>=<span class="nu0">30</span>
+<span class="kw3">export</span> <span class="re2">LIVY_PID_DIR</span>=<span class="sy0">/</span>var<span class="sy0">/</span>run<span class="sy0">/</span>livy
+<span class="kw3">export</span> <span class="re2">LIVY_SERVER_JAVA_OPTS</span>=<span class="st0">"-Xmx2g"</span>
+<span class="re2">YARN_CLASSPATH</span>=<span class="sy0">`</span>yarn classpath<span class="sy0">`</span>
+<span class="kw3">export</span> <span class="re2">CLASSPATH</span>=<span class="st0">"<span class="es2">$YARN_CLASSPATH</span>:/usr/lib/hdinsight-logging/*"</span>
+<span class="kw3">export</span> <span class="re2">LIVY_IDENT_STRING</span>=livy</pre>
+</dd></dl>
+
+</div>
+
+<h3 class="sectionedit26" id="log1">3.7 - Log</h3>
+<div class="level3">
+
+<p>
+The log is set in the environment variable <code>LIVY_LOG_DIR</code>
+</p>
+<pre class="code bash"><span class="kw3">export</span> <span class="re2">LIVY_LOG_DIR</span>=<span class="sy0">/</span>var<span class="sy0">/</span>log<span class="sy0">/</span>livy</pre>
+
+</div>
+
+<h3 class="sectionedit27" id="process">3.8 - Process</h3>
+<div class="level3">
+
+<p>
+The PID dir is found in the environment variable <code>LIVY_PID_DIR</code>
+</p>
+<pre class="code bash"><span class="kw3">export</span> <span class="re2">LIVY_PID_DIR</span>=<span class="sy0">/</span>var<span class="sy0">/</span>run<span class="sy0">/</span>livy
+<span class="kw2">ps</span> <span class="re5">-ef</span> <span class="re5">-q</span> $<span class="br0">(</span><span class="kw2">cat</span> <span class="re1">$LIVY_PID_DIR</span><span class="sy0">/</span>livy-livy-server.pid<span class="br0">)</span>
+&nbsp;
+<span class="kw2">ps</span> <span class="re5">-q</span> $<span class="br0">(</span><span class="kw2">cat</span> <span class="re1">$LIVY_PID_DIR</span><span class="sy0">/</span>livy-livy-server.pid<span class="br0">)</span> <span class="re5">-o</span> <span class="re2">comm</span>=</pre>
+
+<p>
+Example of command:
+</p>
+<pre class="code bash"><span class="sy0">/</span>usr<span class="sy0">/</span>lib<span class="sy0">/</span>jvm<span class="sy0">/</span>java-<span class="nu0">8</span>-openjdk-amd64<span class="sy0">/</span>bin<span class="sy0">/</span><span class="kw2">java</span> <span class="re5">-Xmx2g</span> <span class="re5">-cp</span> <span class="sy0">/</span>usr<span class="sy0">/</span>bin<span class="sy0">/</span>livy2<span class="sy0">/</span>jars<span class="sy0">/*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>bin<span class="sy0">/</span>livy2<span class="sy0">/</span>conf:<span class="sy0">/</span>etc<span class="sy0">/</span>hadoop<span class="sy0">/</span>conf:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>hadoop<span class="sy0">/</span>conf:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>hadoop<span class="sy0">/</span>conf:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>hadoop<span class="sy0">/</span>conf:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>hadoop<span class="sy0">/</span>lib<span class="sy0">/*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>hadoop<span class="sy0">/</span>.<span class="sy0">//*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>hadoop-hdfs<span class="sy0">/</span>.<span class="sy0">/</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>hadoop-hdfs<span class="sy0">/</span>lib<span class="sy0">/*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>hadoop-hdfs<span class="sy0">/</span>.<span class="sy0">//*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>hadoop-yarn<span class="sy0">/</span>lib<span class="sy0">/*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>hadoop-yarn<span class="sy0">/</span>.<span class="sy0">//*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>hadoop-mapreduce<span class="sy0">/</span>lib<span class="sy0">/*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>hadoop-mapreduce<span class="sy0">/</span>.<span class="sy0">//*</span>::<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>current<span class="sy0">/</span>hadoop-mapreduce-client<span class="sy0">/*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>tez<span class="sy0">/*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>tez<span class="sy0">/</span>lib<span class="sy0">/*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>2.6.2.25-<span class="nu0">1</span><span class="sy0">/</span>tez<span class="sy0">/</span>conf:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>current<span class="sy0">/</span>hadoop-yarn-resourcemanager<span class="sy0">/</span>.<span class="sy0">//*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>hdp<span class="sy0">/</span>current<span class="sy0">/</span>hadoop-yarn-resourcemanager<span class="sy0">/</span>lib<span class="sy0">/*</span>:<span class="sy0">/</span>usr<span class="sy0">/</span>lib<span class="sy0">/</span>hdinsight-logging<span class="sy0">/*</span> com.cloudera.livy.server.LivyServer</pre>
+
+</div>
+
+<h2 class="sectionedit28" id="documentationreference">4 - Documentation / Reference</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> <a href="https://github.com/cloudera/livy" class="urlextern" target="_blank" title="https://github.com/cloudera/livy" rel="noopener">https://github.com/cloudera/livy</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="https://livy.incubator.apache.org/" class="urlextern" target="_blank" title="http://livy.incubator.apache.org/" rel="noopener">http://livy.incubator.apache.org/</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="https://hortonworks.com/blog/livy-a-rest-interface-for-apache-spark/" class="urlextern" target="_blank" title="https://hortonworks.com/blog/livy-a-rest-interface-for-apache-spark/" rel="noopener">https://hortonworks.com/blog/livy-a-rest-interface-for-apache-spark/</a></div>
+</li>
+</ul>
+
+<p>
+Azure:
+</p>
+<ul>
+<li class="level1"><div class="li"> <a href="https://github.com/hdinsight/livy" class="urlextern" target="_blank" title="https://github.com/hdinsight/livy" rel="noopener">https://github.com/hdinsight/livy</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="https://docs.microsoft.com/en-us/azure/hdinsight/spark/apache-spark-livy-rest-interface" class="urlextern" target="_blank" title="https://docs.microsoft.com/en-us/azure/hdinsight/spark/apache-spark-livy-rest-interface" rel="noopener">https://docs.microsoft.com/en-us/azure/hdinsight/spark/apache-spark-livy-rest-interface</a></div>
+</li>
+<li class="level1"><div class="li"> <a href="https://docs.microsoft.com/en-us/rest/api/hdinsightspark/" class="urlextern" target="_blank" title="https://docs.microsoft.com/en-us/rest/api/hdinsightspark/" rel="noopener">https://docs.microsoft.com/en-us/rest/api/hdinsightspark/</a></div>
+</li>
+</ul>
+
+</div>
+
+
+
+
+        <!-- wikipage stop -->
+        
+        <bdi>db/spark/livy.txt</bdi> · Last modified: 2018/06/14 10:17 by <bdi>gerardnico</bdi>        
+
+    </div></DIV></DIV>
+    
+  </body>
+</html>

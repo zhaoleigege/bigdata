@@ -1,0 +1,3220 @@
+
+<!DOCTYPE html>
+<html>
+  <!-- OriginalSrc: https://www.dataquest.io/blog/pandas-big-data/ -->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Using pandas with large data</title>
+    
+<link href="assets/1543296706-b2f6a0da8bc5f1758e70809faa488fc1.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="assets/1543296706-b1783a0765c4413da5c7b47d907bdd28.css">
+
+<link rel="stylesheet" type="text/css" href="assets/1543296706-2ef8135a2f5abb7853801af3f230fe87.css">
+
+<link rel="stylesheet" href="assets/1543296706-f364de6eafaca04d662742ad0c8d0b0a.css" media="all">
+<style>
+svg:not(:root).svg-inline--fa{overflow:visible}.svg-inline--fa{display:inline-block;font-size:inherit;height:1em;overflow:visible;vertical-align:-.125em}.svg-inline--fa.fa-lg{vertical-align:-.225em}.svg-inline--fa.fa-w-1{width:.0625em}.svg-inline--fa.fa-w-2{width:.125em}.svg-inline--fa.fa-w-3{width:.1875em}.svg-inline--fa.fa-w-4{width:.25em}.svg-inline--fa.fa-w-5{width:.3125em}.svg-inline--fa.fa-w-6{width:.375em}.svg-inline--fa.fa-w-7{width:.4375em}.svg-inline--fa.fa-w-8{width:.5em}.svg-inline--fa.fa-w-9{width:.5625em}.svg-inline--fa.fa-w-10{width:.625em}.svg-inline--fa.fa-w-11{width:.6875em}.svg-inline--fa.fa-w-12{width:.75em}.svg-inline--fa.fa-w-13{width:.8125em}.svg-inline--fa.fa-w-14{width:.875em}.svg-inline--fa.fa-w-15{width:.9375em}.svg-inline--fa.fa-w-16{width:1em}.svg-inline--fa.fa-w-17{width:1.0625em}.svg-inline--fa.fa-w-18{width:1.125em}.svg-inline--fa.fa-w-19{width:1.1875em}.svg-inline--fa.fa-w-20{width:1.25em}.svg-inline--fa.fa-pull-left{margin-right:.3em;width:auto}.svg-inline--fa.fa-pull-right{margin-left:.3em;width:auto}.svg-inline--fa.fa-border{height:1.5em}.svg-inline--fa.fa-li{width:2em}.svg-inline--fa.fa-fw{width:1.25em}.fa-layers svg.svg-inline--fa{bottom:0;left:0;margin:auto;position:absolute;right:0;top:0}.fa-layers{display:inline-block;height:1em;position:relative;text-align:center;vertical-align:-.125em;width:1em}.fa-layers svg.svg-inline--fa{-webkit-transform-origin:center center;transform-origin:center center}.fa-layers-counter,.fa-layers-text{display:inline-block;position:absolute;text-align:center}.fa-layers-text{left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);-webkit-transform-origin:center center;transform-origin:center center}.fa-layers-counter{background-color:#ff253a;border-radius:1em;color:#fff;height:1.5em;line-height:1;max-width:5em;min-width:1.5em;overflow:hidden;padding:.25em;right:0;text-overflow:ellipsis;top:0;-webkit-transform:scale(.25);transform:scale(.25);-webkit-transform-origin:top right;transform-origin:top right}.fa-layers-bottom-right{bottom:0;right:0;top:auto;-webkit-transform:scale(.25);transform:scale(.25);-webkit-transform-origin:bottom right;transform-origin:bottom right}.fa-layers-bottom-left{bottom:0;left:0;right:auto;top:auto;-webkit-transform:scale(.25);transform:scale(.25);-webkit-transform-origin:bottom left;transform-origin:bottom left}.fa-layers-top-right{right:0;top:0;-webkit-transform:scale(.25);transform:scale(.25);-webkit-transform-origin:top right;transform-origin:top right}.fa-layers-top-left{left:0;right:auto;top:0;-webkit-transform:scale(.25);transform:scale(.25);-webkit-transform-origin:top left;transform-origin:top left}.fa-lg{font-size:1.33333em;line-height:.75em;vertical-align:-.0667em}.fa-xs{font-size:.75em}.fa-sm{font-size:.875em}.fa-1x{font-size:1em}.fa-2x{font-size:2em}.fa-3x{font-size:3em}.fa-4x{font-size:4em}.fa-5x{font-size:5em}.fa-6x{font-size:6em}.fa-7x{font-size:7em}.fa-8x{font-size:8em}.fa-9x{font-size:9em}.fa-10x{font-size:10em}.fa-fw{text-align:center;width:1.25em}.fa-ul{list-style-type:none;margin-left:2.5em;padding-left:0}.fa-ul>li{position:relative}.fa-li{left:-2em;position:absolute;text-align:center;width:2em;line-height:inherit}.fa-border{border:solid .08em #eee;border-radius:.1em;padding:.2em .25em .15em}.fa-pull-left{float:left}.fa-pull-right{float:right}.fa.fa-pull-left,.fab.fa-pull-left,.fal.fa-pull-left,.far.fa-pull-left,.fas.fa-pull-left{margin-right:.3em}.fa.fa-pull-right,.fab.fa-pull-right,.fal.fa-pull-right,.far.fa-pull-right,.fas.fa-pull-right{margin-left:.3em}.fa-spin{-webkit-animation:fa-spin 2s infinite linear;animation:fa-spin 2s infinite linear}.fa-pulse{-webkit-animation:fa-spin 1s infinite steps(8);animation:fa-spin 1s infinite steps(8)}@-webkit-keyframes fa-spin{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes fa-spin{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}.fa-rotate-90{-webkit-transform:rotate(90deg);transform:rotate(90deg)}.fa-rotate-180{-webkit-transform:rotate(180deg);transform:rotate(180deg)}.fa-rotate-270{-webkit-transform:rotate(270deg);transform:rotate(270deg)}.fa-flip-horizontal{-webkit-transform:scale(-1,1);transform:scale(-1,1)}.fa-flip-vertical{-webkit-transform:scale(1,-1);transform:scale(1,-1)}.fa-flip-horizontal.fa-flip-vertical{-webkit-transform:scale(-1,-1);transform:scale(-1,-1)}:root .fa-flip-horizontal,:root .fa-flip-vertical,:root .fa-rotate-180,:root .fa-rotate-270,:root .fa-rotate-90{-webkit-filter:none;filter:none}.fa-stack{display:inline-block;height:2em;position:relative;width:2em}.fa-stack-1x,.fa-stack-2x{bottom:0;left:0;margin:auto;position:absolute;right:0;top:0}.svg-inline--fa.fa-stack-1x{height:1em;width:1em}.svg-inline--fa.fa-stack-2x{height:2em;width:2em}.fa-inverse{color:#fff}.sr-only{border:0;clip:rect(0,0,0,0);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}.sr-only-focusable:active,.sr-only-focusable:focus{clip:auto;height:auto;margin:0;overflow:visible;position:static;width:auto}
+</style>
+<style>
+
+</style>
+<style>
+@media print {#ghostery-purple-box {display:none !important}}
+</style>
+<style>
+
+    
+    @media (min-width:899px){ .home-template .inner {margin-top: 40px;!important;}}
+
+</style>
+<style>
+#boxzilla-overlay{position:fixed;background:rgba(0,0,0,.65);width:100%;height:100%;left:0;top:0;z-index:99999}.boxzilla-center-container{position:fixed;top:0;left:0;right:0;height:0;text-align:center;z-index:999999;line-height:0}.boxzilla-center-container .boxzilla{display:inline-block;text-align:left;position:relative;line-height:normal}.boxzilla{position:fixed;z-index:999999;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;background:#fff;padding:25px}.boxzilla.boxzilla-top-left{top:0;left:0}.boxzilla.boxzilla-top-right{top:0;right:0}.boxzilla.boxzilla-bottom-left{bottom:0;left:0}.boxzilla.boxzilla-bottom-right{bottom:0;right:0}.boxzilla-content>:first-child{margin-top:0;padding-top:0}.boxzilla-content>:last-child{margin-bottom:0;padding-bottom:0}.boxzilla-close-icon{position:absolute;right:0;top:0;text-align:center;padding:6px;cursor:pointer;-webkit-appearance:none;font-size:28px;font-weight:700;line-height:20px;color:#000;opacity:.5}.boxzilla-close-icon:focus,.boxzilla-close-icon:hover{opacity:.8}
+</style>
+<style>
+#i6c9d948f32356413aab6c01686a8e62efa0dacb6-container{margin:0;padding:0;overflow:hidden;position:absolute;border:none;background-color:transparent}body.logged-in.admin-bar #i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.HB-Bar.hb-bar-top,body.logged-in.admin-bar #i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.HB-Slider.hb-top-left,body.logged-in.admin-bar #i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.HB-Slider.hb-top-right,body.logged-in.admin-bar #pull-down.hb-bar-top,body.logged-in.admin-bar #pull-down.hb-top-left,body.logged-in.admin-bar #pull-down.hb-top-right{z-index:99998!important;top:32px!important}.hellobar#pull-down.hb-animated{animation-duration:1s;-o-animation-duration:1s;-ms-animation-duration:1s;-moz-animation-duration:1s;-webkit-animation-duration:1s;animation-fill-mode:forwards;-o-animation-fill-mode:forwards;-ms-animation-fill-mode:forwards;-moz-animation-fill-mode:forwards;-webkit-animation-fill-mode:forwards}.hellobar#pull-down{top:-1px;right:10px;padding:3px;z-index:10000002;overflow:hidden;position:absolute;border-radius:0 0 5px 5px;transform:translateY(-40px);-o-transform:translateY(-40px);-ms-transform:translateY(-40px);-moz-transform:translateY(-40px);-webkit-transform:translateY(-40px)}.hellobar#pull-down .hellobar-arrow{cursor:pointer;display:flex;height:11px;opacity:.3;width:11px;filter:flipv;transform:scaleY(-1);-o-transform:scaleY(-1);-ms-transform:scaleY(-1);-moz-transform:scaleY(-1);-webkit-transform:scaleY(-1)}.hellobar#pull-down .hellobar-arrow:hover{opacity:.6}.hellobar#pull-down .hellobar-arrow svg{fill:#fff}.hellobar#pull-down.inverted .hellobar-arrow svg{fill:#3c3e3f}#i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.hb-animated{animation-duration:.25s;-o-animation-duration:.25s;-ms-animation-duration:.25s;-moz-animation-duration:.25s;-webkit-animation-duration:.25s;animation-fill-mode:forwards;-o-animation-fill-mode:forwards;-ms-animation-fill-mode:forwards;-moz-animation-fill-mode:forwards;-webkit-animation-fill-mode:forwards}@keyframes hb-bounceInDown{0%,60%,75%,90%,to{transition-timing-function:cubic-bezier(.215,.61,.355,1);-o-transition-timing-function:cubic-bezier(.215,.61,.355,1);-ms-transition-timing-function:cubic-bezier(.215,.61,.355,1);-moz-transition-timing-function:cubic-bezier(.215,.61,.355,1);-webkit-transition-timing-function:cubic-bezier(.215,.61,.355,1)}0%{transform:translate3d(0,-3000px,0);-o-transform:translate3d(0,-3000px,0);-ms-transform:translate3d(0,-3000px,0);-moz-transform:translate3d(0,-3000px,0);-webkit-transform:translate3d(0,-3000px,0)}60%{transform:translateZ(0);-o-transform:translateZ(0);-ms-transform:translateZ(0);-moz-transform:translateZ(0);-webkit-transform:translateZ(0)}75%{transform:translate3d(0,-40px,0);-o-transform:translate3d(0,-40px,0);-ms-transform:translate3d(0,-40px,0);-moz-transform:translate3d(0,-40px,0);-webkit-transform:translate3d(0,-40px,0)}90%{transform:translateZ(0);-o-transform:translateZ(0);-ms-transform:translateZ(0);-moz-transform:translateZ(0);-webkit-transform:translateZ(0)}to{transform:none;-o-transform:none;-ms-transform:none;-moz-transform:none;-webkit-transform:none}}@-moz-keyframes hb-bounceInDown{0%,60%,75%,90%,to{-moz-transition-timing-function:cubic-bezier(.215,.61,.355,1)}0%{-moz-transform:translate3d(0,-3000px,0)}60%{-moz-transform:translateZ(0)}75%{-moz-transform:translate3d(0,-40px,0)}90%{-moz-transform:translateZ(0)}to{-moz-transform:none}}@-webkit-keyframes hb-bounceInDown{0%,60%,75%,90%,to{-webkit-transition-timing-function:cubic-bezier(.215,.61,.355,1)}0%{-webkit-transform:translate3d(0,-3000px,0)}60%{-webkit-transform:translateZ(0)}75%{-webkit-transform:translate3d(0,-40px,0)}90%{-webkit-transform:translateZ(0)}to{-webkit-transform:none}}@keyframes hb-bounceInUp{0%,60%,75%,90%,to{transition-timing-function:cubic-bezier(.215,.61,.355,1);-o-transition-timing-function:cubic-bezier(.215,.61,.355,1);-ms-transition-timing-function:cubic-bezier(.215,.61,.355,1);-moz-transition-timing-function:cubic-bezier(.215,.61,.355,1);-webkit-transition-timing-function:cubic-bezier(.215,.61,.355,1)}0%{transform:translate3d(0,3000px,0);-o-transform:translate3d(0,3000px,0);-ms-transform:translate3d(0,3000px,0);-moz-transform:translate3d(0,3000px,0);-webkit-transform:translate3d(0,3000px,0)}60%{transform:translateZ(0);-o-transform:translateZ(0);-ms-transform:translateZ(0);-moz-transform:translateZ(0);-webkit-transform:translateZ(0)}75%{transform:translate3d(0,40px,0);-o-transform:translate3d(0,40px,0);-ms-transform:translate3d(0,40px,0);-moz-transform:translate3d(0,40px,0);-webkit-transform:translate3d(0,40px,0)}90%{transform:translateZ(0);-o-transform:translateZ(0);-ms-transform:translateZ(0);-moz-transform:translateZ(0);-webkit-transform:translateZ(0)}to{transform:none;-o-transform:none;-ms-transform:none;-moz-transform:none;-webkit-transform:none}}@-moz-keyframes hb-bounceInUp{0%,60%,75%,90%,to{-moz-transition-timing-function:cubic-bezier(.215,.61,.355,1)}0%{-moz-transform:translate3d(0,3000px,0)}60%{-moz-transform:translateZ(0)}75%{-moz-transform:translate3d(0,40px,0)}90%{-moz-transform:translateZ(0)}to{-moz-transform:none}}@-webkit-keyframes hb-bounceInUp{0%,60%,75%,90%,to{-webkit-transition-timing-function:cubic-bezier(.215,.61,.355,1)}0%{-webkit-transform:translate3d(0,3000px,0)}60%{-webkit-transform:translateZ(0)}75%{-webkit-transform:translate3d(0,40px,0)}90%{-webkit-transform:translateZ(0)}to{-webkit-transform:none}}@keyframes hb-bounceOutUp{0%,to{transition-timing-function:ease-in;-o-transition-timing-function:ease-in;-ms-transition-timing-function:ease-in;-moz-transition-timing-function:ease-in;-webkit-transition-timing-function:ease-in}0%{transform:none;-o-transform:none;-ms-transform:none;-moz-transform:none;-webkit-transform:none}to{transform:translate3d(0,-500px,0);-o-transform:translate3d(0,-500px,0);-ms-transform:translate3d(0,-500px,0);-moz-transform:translate3d(0,-500px,0);-webkit-transform:translate3d(0,-500px,0)}}@-moz-keyframes hb-bounceOutUp{0%,to{-moz-transition-timing-function:ease-in}0%{-moz-transform:none}to{-moz-transform:translate3d(0,-500px,0)}}@-webkit-keyframes hb-bounceOutUp{0%,to{-webkit-transition-timing-function:ease-in}0%{-webkit-transform:none}to{-webkit-transform:translate3d(0,-500px,0)}}@keyframes hb-bounceOutDown{0%,to{transition-timing-function:ease-in;-o-transition-timing-function:ease-in;-ms-transition-timing-function:ease-in;-moz-transition-timing-function:ease-in;-webkit-transition-timing-function:ease-in}0%{transform:none;-o-transform:none;-ms-transform:none;-moz-transform:none;-webkit-transform:none}to{transform:translate3d(0,500px,0);-o-transform:translate3d(0,500px,0);-ms-transform:translate3d(0,500px,0);-moz-transform:translate3d(0,500px,0);-webkit-transform:translate3d(0,500px,0)}}@-moz-keyframes hb-bounceOutDown{0%,to{-moz-transition-timing-function:ease-in}0%{-moz-transform:none}to{-moz-transform:translate3d(0,500px,0)}}@-webkit-keyframes hb-bounceOutDown{0%,to{-webkit-transition-timing-function:ease-in}0%{-webkit-transform:none}to{-webkit-transform:translate3d(0,500px,0)}}@keyframes hb-bounceInLeft{0%,75%,to{transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-o-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-ms-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-moz-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-webkit-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255)}0%{transform:translate3d(200%,0,0);-o-transform:translate3d(200%,0,0);-ms-transform:translate3d(200%,0,0);-moz-transform:translate3d(200%,0,0);-webkit-transform:translate3d(200%,0,0)}75%{transform:translate3d(-10%,0,0);-o-transform:translate3d(-10%,0,0);-ms-transform:translate3d(-10%,0,0);-moz-transform:translate3d(-10%,0,0);-webkit-transform:translate3d(-10%,0,0)}to{transform:none;-o-transform:none;-ms-transform:none;-moz-transform:none;-webkit-transform:none}}@-moz-keyframes hb-bounceInLeft{0%,75%,to{-moz-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255)}0%{-moz-transform:translate3d(200%,0,0)}75%{-moz-transform:translate3d(-10%,0,0)}to{-moz-transform:none}}@-webkit-keyframes hb-bounceInLeft{0%,75%,to{-webkit-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255)}0%{-webkit-transform:translate3d(200%,0,0)}75%{-webkit-transform:translate3d(-10%,0,0)}to{-webkit-transform:none}}@keyframes hb-bounceOutRight{0%,25%,to{transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-o-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-ms-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-moz-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-webkit-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255)}0%{transform:none;-o-transform:none;-ms-transform:none;-moz-transform:none;-webkit-transform:none}25%{transform:translate3d(-10%,0,0);-o-transform:translate3d(-10%,0,0);-ms-transform:translate3d(-10%,0,0);-moz-transform:translate3d(-10%,0,0);-webkit-transform:translate3d(-10%,0,0)}to{transform:translate3d(200%,0,0);-o-transform:translate3d(200%,0,0);-ms-transform:translate3d(200%,0,0);-moz-transform:translate3d(200%,0,0);-webkit-transform:translate3d(200%,0,0)}}@-moz-keyframes hb-bounceOutRight{0%,25%,to{-moz-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255)}0%{-moz-transform:none}25%{-moz-transform:translate3d(-10%,0,0)}to{-moz-transform:translate3d(200%,0,0)}}@-webkit-keyframes hb-bounceOutRight{0%,25%,to{-webkit-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255)}0%{-webkit-transform:none}25%{-webkit-transform:translate3d(-10%,0,0)}to{-webkit-transform:translate3d(200%,0,0)}}@keyframes hb-bounceInRight{0%,75%,to{transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-o-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-ms-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-moz-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-webkit-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255)}0%{transform:translate3d(-200%,0,0);-o-transform:translate3d(-200%,0,0);-ms-transform:translate3d(-200%,0,0);-moz-transform:translate3d(-200%,0,0);-webkit-transform:translate3d(-200%,0,0)}75%{transform:translate3d(10%,0,0);-o-transform:translate3d(10%,0,0);-ms-transform:translate3d(10%,0,0);-moz-transform:translate3d(10%,0,0);-webkit-transform:translate3d(10%,0,0)}to{transform:none;-o-transform:none;-ms-transform:none;-moz-transform:none;-webkit-transform:none}}@-moz-keyframes hb-bounceInRight{0%,75%,to{-moz-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255)}0%{-moz-transform:translate3d(-200%,0,0)}75%{-moz-transform:translate3d(10%,0,0)}to{-moz-transform:none}}@-webkit-keyframes hb-bounceInRight{0%,75%,to{-webkit-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255)}0%{-webkit-transform:translate3d(-200%,0,0)}75%{-webkit-transform:translate3d(10%,0,0)}to{-webkit-transform:none}}@keyframes hb-bounceOutLeft{0%,25%,to{transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-o-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-ms-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-moz-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255);-webkit-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255)}0%{transform:none;-o-transform:none;-ms-transform:none;-moz-transform:none;-webkit-transform:none}25%{transform:translate3d(10%,0,0);-o-transform:translate3d(10%,0,0);-ms-transform:translate3d(10%,0,0);-moz-transform:translate3d(10%,0,0);-webkit-transform:translate3d(10%,0,0)}to{transform:translate3d(-200%,0,0);-o-transform:translate3d(-200%,0,0);-ms-transform:translate3d(-200%,0,0);-moz-transform:translate3d(-200%,0,0);-webkit-transform:translate3d(-200%,0,0)}}@-moz-keyframes hb-bounceOutLeft{0%,25%,to{-moz-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255)}0%{-moz-transform:none}25%{-moz-transform:translate3d(10%,0,0)}to{-moz-transform:translate3d(-200%,0,0)}}@-webkit-keyframes hb-bounceOutLeft{0%,25%,to{-webkit-transition-timing-function:cubic-bezier(.65,-.25,.325,1.255)}0%{-webkit-transform:none}25%{-webkit-transform:translate3d(10%,0,0)}to{-webkit-transform:translate3d(-200%,0,0)}}@keyframes hb-fadeIn{0%,to{transition-timing-function:ease-in;-o-transition-timing-function:ease-in;-ms-transition-timing-function:ease-in;-moz-transition-timing-function:ease-in;-webkit-transition-timing-function:ease-in}0%{opacity:0}to{opacity:1}}@-moz-keyframes hb-fadeIn{0%,to{-moz-transition-timing-function:ease-in}0%{opacity:0}to{opacity:1}}@-webkit-keyframes hb-fadeIn{0%,to{-webkit-transition-timing-function:ease-in}0%{opacity:0}to{opacity:1}}@keyframes hb-fadeOut{0%,to{transition-timing-function:ease-in;-o-transition-timing-function:ease-in;-ms-transition-timing-function:ease-in;-moz-transition-timing-function:ease-in;-webkit-transition-timing-function:ease-in}0%{opacity:1}to{opacity:0}}@-moz-keyframes hb-fadeOut{0%,to{-moz-transition-timing-function:ease-in}0%{opacity:1}to{opacity:0}}@-webkit-keyframes hb-fadeOut{0%,to{-webkit-transition-timing-function:ease-in}0%{opacity:1}to{opacity:0}}@keyframes hb-fadeInDown{0%,to{transition-timing-function:ease-in;-o-transition-timing-function:ease-in;-ms-transition-timing-function:ease-in;-moz-transition-timing-function:ease-in;-webkit-transition-timing-function:ease-in}0%{opacity:0;height:110%;margin-top:-5%}to{opacity:1;height:100%;margin-top:0}}@-moz-keyframes hb-fadeInDown{0%,to{-moz-transition-timing-function:ease-in}0%{opacity:0;height:110%;margin-top:-5%}to{opacity:1;height:100%;margin-top:0}}@-webkit-keyframes hb-fadeInDown{0%,to{-webkit-transition-timing-function:ease-in}0%{opacity:0;height:110%;margin-top:-5%}to{opacity:1;height:100%;margin-top:0}}@keyframes hb-fadeOutUp{0%,to{transition-timing-function:ease-in;-o-transition-timing-function:ease-in;-ms-transition-timing-function:ease-in;-moz-transition-timing-function:ease-in;-webkit-transition-timing-function:ease-in}0%{opacity:1;height:100%;margin-top:0}to{opacity:0;height:110%;margin-top:-5%}}@-moz-keyframes hb-fadeOutUp{0%,to{-moz-transition-timing-function:ease-in}0%{opacity:1;height:100%;margin-top:0}to{opacity:0;height:110%;margin-top:-5%}}@-webkit-keyframes hb-fadeOutUp{0%,to{-webkit-transition-timing-function:ease-in}0%{opacity:1;height:100%;margin-top:0}to{opacity:0;height:110%;margin-top:-5%}}.hb-hidden{display:none}body .hb-cu-offer,html .hb-cu-offer{text-align:center!important;padding:2em!important}body .hb-cu-offer a,html .hb-cu-offer a{text-decoration:none!important;box-shadow:none!important}body .hb-cu-offer a:hover,html .hb-cu-offer a:hover{text-decoration:underline!important;box-shadow:none!important}.hb-cu-modal{display:block!important;width:90%!important;position:absolute!important;top:50%!important;left:50%!important;transform:translate(-50%,-50%)!important;font-family:Open Sans,Helvetica,Arial,sans-serif!important;padding:20px!important;text-align:center!important;font-size:13px!important;background-color:#fefefe!important;margin:0!important;border:1px solid #efefef!important;max-width:670px!important}.hb-cu-modal .progress{margin:10px auto 18px!important;width:95%!important}.hb-cu-modal .caption{color:#000!important;border-bottom:1px solid #ccc!important;font-size:10pt!important;padding:8px 0!important;width:85%!important;max-width:520px!important}.hb-cu-modal .caption,.hb-cu-modal .headline{font-family:Open Sans,Helvetica,Arial,sans-serif!important;margin:auto!important}.hb-cu-modal .headline{letter-spacing:0!important;color:#333!important;font-size:18pt!important;font-weight:700!important;padding:30px!important;max-width:500px!important}.hb-cu-modal .form{padding:0 30px!important}.hb-cu-modal input{display:block!important}.hb-cu-modal input,.hb-cu-modal input[type=checkbox]{padding:13px!important;width:100%!important;max-width:450px!important;margin:auto!important;margin-bottom:15px!important;font-size:1.2em!important;color:#201d1d!important;background:#fff!important;border:1pt solid #c9d7dd!important}.hb-cu-modal input[type=checkbox]{display:inline!important}.hb-cu-modal .hb-gdpr-checkboxes{padding:0 67px!important;margin-bottom:15px!important}.hb-cu-modal .hb-gdpr-checkboxes label{text-align:left;margin:0 0 10px;display:flex;align-items:flex-start}.hb-cu-modal .hb-gdpr-checkboxes span{flex:94%}.hb-cu-modal .hb-gdpr-checkboxes .hb-gdpr-checkbox{padding:0!important;width:auto!important;margin:2px 5px 0 0!important;font-size:1.2em!important;color:#201d1d!important;background:#fff!important;border:1pt solid #c9d7dd!important;display:inline!important}.hb-cu-modal .cta{padding:13px!important;width:100%!important;max-width:450px!important;margin:auto!important;margin-bottom:15px!important;font-size:1.2em!important;color:#201d1d!important;display:block!important;color:#fff!important;text-transform:uppercase!important;text-decoration:none!important;font-family:Open Sans,Helvetica,Arial,sans-serif!important;font-weight:700!important;cursor:pointer!important;padding:20px!important;font-size:18px!important;margin-top:5px!important;border:none!important;border-radius:0!important;-webkit-appearance:none!important}.hb-cu-modal .cta:focus{outline:none!important}.hb-cu-modal .spam-disclaimer{font-family:Open Sans,Helvetica,Arial,sans-serif!important;margin-top:8px!important;color:#9c9c9d!important;font-size:14px!important}.hb-cu-modal-container{display:none;position:fixed!important;z-index:9000000!important;padding:0!important;padding-top:100px!important;left:0!important;top:0!important;width:100%!important;height:100%!important;overflow:auto!important;background-color:#000!important;background-color:rgba(0,0,0,.4)!important;box-sizing:content-box!important}#hb-cu-close-button{margin-top:-35px!important;margin-right:-35px!important;float:right!important;width:auto!important;height:auto!important;background:#333!important;border:2px solid #fff!important;-webkit-border-radius:18px!important;-moz-border-radius:18px!important;border-radius:18px!important;box-shadow:none!important;box-sizing:border-box!important;letter-spacing:normal!important;word-spacing:0!important;text-size-adjust:100%!important;padding:7px!important;display:flex!important;justify-content:center!important;align-items:center!important}#hb-cu-close-button svg{fill:transparent!important;stroke:#fff!important;stroke-linecap:round!important;stroke-width:5px!important}#i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.HB-Bar{top:0;left:0;width:100%;min-height:40px;z-index:10000001}#i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.HB-Bar.hb-large{min-height:50px;max-height:50px}#hellobar-pusher{height:30px;overflow:hidden;position:relative;flex:none}#hellobar-pusher.hb-large{height:50px}.hellobar#pull-down.hb-bar-bottom{top:auto;bottom:-1px;position:fixed;border-radius:5px 5px 0 0;transform:translateY(40px);-o-transform:translateY(40px);-ms-transform:translateY(40px);-moz-transform:translateY(40px);-webkit-transform:translateY(40px)}.hellobar#pull-down.hb-bar-bottom .hellobar-arrow{filter:none;transform:none;-o-transform:none;-ms-transform:none;-moz-transform:none;-webkit-transform:none}#i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.HB-Bar.remains-in-place{top:0;position:fixed;_position:absolute;_top:expression(eval(document.body.scrollTop))}#i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.HB-Bar.hb-bar-bottom{top:auto;bottom:0;position:fixed;_position:absolute;_bottom:expression(eval(document.body.scrollTop))}#i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.HB-Bar.hb-animated{animation-duration:1s;-o-animation-duration:1s;-ms-animation-duration:1s;-moz-animation-duration:1s;-webkit-animation-duration:1s}#i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.HB-Bar.hb-animateIn,.hellobar#pull-down.hb-animateIn{animation-name:hb-bounceInDown;-o-animation-name:hb-bounceInDown;-ms-animation-name:hb-bounceInDown;-moz-animation-name:hb-bounceInDown;-webkit-animation-name:hb-bounceInDown}#i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.HB-Bar.hb-animateOut,.hellobar#pull-down.hb-animateOut{animation-name:hb-bounceOutUp;-o-animation-name:hb-bounceOutUp;-ms-animation-name:hb-bounceOutUp;-moz-animation-name:hb-bounceOutUp;-webkit-animation-name:hb-bounceOutUp}#i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.HB-Bar.hb-animateIn.hb-bar-bottom,.hellobar#pull-down.hb-animateIn.hb-bar-bottom{animation-name:hb-bounceInUp;-o-animation-name:hb-bounceInUp;-ms-animation-name:hb-bounceInUp;-moz-animation-name:hb-bounceInUp;-webkit-animation-name:hb-bounceInUp}#i6c9d948f32356413aab6c01686a8e62efa0dacb6-container.HB-Bar.hb-animateOut.hb-bar-bottom,.hellobar#pull-down.hb-animateOut.hb-bar-bottom{animation-name:hb-bounceOutDown;-o-animation-name:hb-bounceOutDown;-ms-animation-name:hb-bounceOutDown;-moz-animation-name:hb-bounceOutDown;-webkit-animation-name:hb-bounceOutDown}
+
+
+</style>
+<style>
+.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+
+</style>
+<style>
+#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+
+</style>
+<style>
+.MathJax_Preview .MJXf-math {color: inherit!important}
+
+</style>
+<style>
+.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+
+</style>
+<style>
+#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+
+</style>
+<style>
+.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+
+</style>
+<style>
+
+</style>
+<style>
+
+</style>
+<style>
+.css-1l99lqu{border-radius:0;display:block;height:2px;width:25px;position:absolute;right:6px;top:6px;}
+</style>
+<style>
+.__typeform-embed-mobile-modal-open{overflow:hidden !important;position:fixed !important;top:0 !important;left:0 !important;right:0 !important;bottom:0 !important;}
+</style>
+<style>
+.css-bhl88l{-webkit-transition:visibility 0s 0.25s,opacity 0.25s linear;transition:visibility 0s 0.25s,opacity 0.25s linear;visibility:hidden;opacity:0;}
+</style>
+<style>
+.fluid-width-video-container{flex-grow: 1;width:100%;}.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}
+</style>
+<style>
+object,embed{                -webkit-animation-duration:.001s;-webkit-animation-name:playerInserted;                -ms-animation-duration:.001s;-ms-animation-name:playerInserted;                -o-animation-duration:.001s;-o-animation-name:playerInserted;                animation-duration:.001s;animation-name:playerInserted;}                @-webkit-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @-ms-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @-o-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}
+</style>
+<style>
+.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+
+</style>
+<style>
+
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+<pre><code>.dataframe thead th {
+    text-align: left;
+}
+
+.dataframe tbody tr th {
+    vertical-align: top;
+}
+</code></pre>
+
+</style>
+<style>
+
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+<pre><code>.dataframe thead th {
+    text-align: left;
+}
+
+.dataframe tbody tr th {
+    vertical-align: top;
+}
+</code></pre>
+
+</style>
+<style>
+
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+<pre><code>.dataframe thead th {
+    text-align: left;
+}
+
+.dataframe tbody tr th {
+    vertical-align: top;
+}
+</code></pre>
+
+</style>
+<style>
+
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+<pre><code>.dataframe thead th {
+    text-align: left;
+}
+
+.dataframe tbody tr th {
+    vertical-align: top;
+}
+</code></pre>
+
+</style>
+<style>
+
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+<pre><code>.dataframe thead th {
+    text-align: left;
+}
+
+.dataframe tbody tr th {
+    vertical-align: top;
+}
+</code></pre>
+
+</style>
+<style>
+
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+<pre><code>.dataframe thead th {
+    text-align: left;
+}
+
+.dataframe tbody tr th {
+    vertical-align: top;
+}
+</code></pre>
+
+</style>
+
+    <style>
+      .mx-wc-main img {max-width: 100%;}
+      .mx-wc-main{
+        box-sizing: content-box;
+        background-color: rgb(244, 248, 251);
+        margin: 0 auto;
+        max-width: 900px;
+        padding: 15px 15px 80px 15px;
+      }
+      .mx-wc-main > .clipping-information{
+        text-align: left;
+        margin-top: 20px;
+        background-color: #eeeeee;
+        padding: 15px;
+        border-radius: 4px;
+        color: #333;
+        font-size: 14px;
+        line-height: 22px;
+      }
+      .mx-wc-main > .clipping-information a { color: blue; }
+      .mx-wc-main > .clipping-information label { display: inline; }
+      .mx-wc-main > .clipping-information label > code {
+        padding: 2px 8px;
+        background-color: rgba(200, 200, 200, 0.7);
+        font-size: 14px;
+      }
+
+    </style>
+  </head>
+  <body style="background-color: #464646; min-height: 100%; height: auto;" id="" class="post-template tag-pandas tag-python">
+    <div class="mx-wc-main">
+      <DIV class="site-wrapper" style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><MAIN id="site-main" class="site-main outer" role="main" style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><DIV class="inner" style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><ARTICLE class="post-full post tag-pandas tag-python no-image" style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><SECTION class="post-full-content" style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><div class="kg-card-markdown mx-wc-selected-elem" style="float: none; position: relative; top: 0px; left: 0px; margin: 0px; flex: unset; width: 100%; max-width: 100%; box-sizing: border-box;"><h2 id="tipsforreducingmemoryusagebyupto90"><em>Tips for reducing memory usage by up to 90%</em></h2>
+<p>When working using pandas with small data (under 100 megabytes), performance is rarely a problem.  When we move to larger data (100 megabytes to multiple gigabytes), performance issues can make run times much longer, and cause code to fail entirely due to insufficient memory.</p>
+<p>While tools like Spark can handle large data sets (100 gigabytes to multiple terabytes), taking full advantage of their capabilities usually requires more expensive hardware. And unlike pandas, they lack rich feature sets for high quality data cleaning, exploration, and analysis. For medium-sized data, we're better off trying to get more out of pandas, rather than switching to a different tool.</p>
+<p>In this post, we'll learn about memory usage with pandas, how to reduce a dataframe's memory footprint by almost 90%, simply by selecting the appropriate data types for columns.</p>
+<img class="full-width" src="assets/1543296706-ce0088fadd9f3739f9e1e0749f3d8c2f.jpg">
+<p></p>
+<h2 id="workingwithbaseballgamelogs">Working with baseball game logs</h2>
+<p>We'll be working with data from 130 years of major league baseball games, originally sourced from <a href="http://www.retrosheet.org/gamelogs/index.html">Retrosheet</a>.</p>
+<p>Originally the data was in 127 separate CSV files, however we have used <a href="https://csvkit.readthedocs.io/en/1.0.2/">csvkit</a> to merge the files, and have added column names into the first row. If you'd like to download our version of the data to follow along with this post, we have made it <a href="https://data.world/dataquest/mlb-game-logs">available here</a>.</p>
+<p>Let's start by importing our data and taking a look at the first five rows.</p>
+<pre class=" language-python"><code class=" language-python"><span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+
+gl <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">'game_logs.csv'</span><span class="token punctuation">)</span>
+gl<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>date</th>
+<th>number_of_game</th>
+<th>day_of_week</th>
+<th>v_name</th>
+<th>v_league</th>
+<th>v_game_number</th>
+<th>h_name</th>
+<th>h_league</th>
+<th>h_game_number</th>
+<th>v_score</th>
+<th>h_score</th>
+<th>length_outs</th>
+<th>day_night</th>
+<th>completion</th>
+<th>forefeit</th>
+<th>protest</th>
+<th>park_id</th>
+<th>attendance</th>
+<th>length_minutes</th>
+<th>v_line_score</th>
+<th>h_line_score</th>
+<th>v_at_bats</th>
+<th>v_hits</th>
+<th>v_doubles</th>
+<th>v_triples</th>
+<th>v_homeruns</th>
+<th>v_rbi</th>
+<th>v_sacrifice_hits</th>
+<th>v_sacrifice_flies</th>
+<th>v_hit_by_pitch</th>
+<th>v_walks</th>
+<th>v_intentional walks</th>
+<th>v_strikeouts</th>
+<th>v_stolen_bases</th>
+<th>v_caught_stealing</th>
+<th>v_grounded_into_double</th>
+<th>v_first_catcher_interference</th>
+<th>v_left_on_base</th>
+<th>v_pitchers_used</th>
+<th>v_individual_earned_runs</th>
+<th>v_team_earned_runs</th>
+<th>v_wild_pitches</th>
+<th>v_balks</th>
+<th>v_putouts</th>
+<th>v_assists</th>
+<th>v_errors</th>
+<th>v_passed_balls</th>
+<th>v_double_plays</th>
+<th>v_triple_plays</th>
+<th>h_at_bats</th>
+<th>h_hits</th>
+<th>h_doubles</th>
+<th>h_triples</th>
+<th>h_homeruns</th>
+<th>h_rbi</th>
+<th>h_sacrifice_hits</th>
+<th>h_sacrifice_flies</th>
+<th>h_hit_by_pitch</th>
+<th>h_walks</th>
+<th>h_intentional walks</th>
+<th>h_strikeouts</th>
+<th>h_stolen_bases</th>
+<th>h_caught_stealing</th>
+<th>h_grounded_into_double</th>
+<th>h_first_catcher_interference</th>
+<th>h_left_on_base</th>
+<th>h_pitchers_used</th>
+<th>h_individual_earned_runs</th>
+<th>h_team_earned_runs</th>
+<th>h_wild_pitches</th>
+<th>h_balks</th>
+<th>h_putouts</th>
+<th>h_assists</th>
+<th>h_errors</th>
+<th>h_passed_balls</th>
+<th>h_double_plays</th>
+<th>h_triple_plays</th>
+<th>hp_umpire_id</th>
+<th>hp_umpire_name</th>
+<th>1b_umpire_id</th>
+<th>1b_umpire_name</th>
+<th>2b_umpire_id</th>
+<th>2b_umpire_name</th>
+<th>3b_umpire_id</th>
+<th>3b_umpire_name</th>
+<th>lf_umpire_id</th>
+<th>lf_umpire_name</th>
+<th>rf_umpire_id</th>
+<th>rf_umpire_name</th>
+<th>v_manager_id</th>
+<th>v_manager_name</th>
+<th>h_manager_id</th>
+<th>h_manager_name</th>
+<th>winning_pitcher_id</th>
+<th>winning_pitcher_name</th>
+<th>losing_pitcher_id</th>
+<th>losing_pitcher_name</th>
+<th>saving_pitcher_id</th>
+<th>saving_pitcher_name</th>
+<th>winning_rbi_batter_id</th>
+<th>winning_rbi_batter_id_name</th>
+<th>v_starting_pitcher_id</th>
+<th>v_starting_pitcher_name</th>
+<th>h_starting_pitcher_id</th>
+<th>h_starting_pitcher_name</th>
+<th>v_player_1_id</th>
+<th>v_player_1_name</th>
+<th>v_player_1_def_pos</th>
+<th>v_player_2_id</th>
+<th>v_player_2_name</th>
+<th>v_player_2_def_pos</th>
+<th>v_player_3_id</th>
+<th>v_player_3_name</th>
+<th>v_player_3_def_pos</th>
+<th>v_player_4_id</th>
+<th>v_player_4_name</th>
+<th>v_player_4_def_pos</th>
+<th>v_player_5_id</th>
+<th>v_player_5_name</th>
+<th>v_player_5_def_pos</th>
+<th>v_player_6_id</th>
+<th>v_player_6_name</th>
+<th>v_player_6_def_pos</th>
+<th>v_player_7_id</th>
+<th>v_player_7_name</th>
+<th>v_player_7_def_pos</th>
+<th>v_player_8_id</th>
+<th>v_player_8_name</th>
+<th>v_player_8_def_pos</th>
+<th>v_player_9_id</th>
+<th>v_player_9_name</th>
+<th>v_player_9_def_pos</th>
+<th>h_player_1_id</th>
+<th>h_player_1_name</th>
+<th>h_player_1_def_pos</th>
+<th>h_player_2_id</th>
+<th>h_player_2_name</th>
+<th>h_player_2_def_pos</th>
+<th>h_player_3_id</th>
+<th>h_player_3_name</th>
+<th>h_player_3_def_pos</th>
+<th>h_player_4_id</th>
+<th>h_player_4_name</th>
+<th>h_player_4_def_pos</th>
+<th>h_player_5_id</th>
+<th>h_player_5_name</th>
+<th>h_player_5_def_pos</th>
+<th>h_player_6_id</th>
+<th>h_player_6_name</th>
+<th>h_player_6_def_pos</th>
+<th>h_player_7_id</th>
+<th>h_player_7_name</th>
+<th>h_player_7_def_pos</th>
+<th>h_player_8_id</th>
+<th>h_player_8_name</th>
+<th>h_player_8_def_pos</th>
+<th>h_player_9_id</th>
+<th>h_player_9_name</th>
+<th>h_player_9_def_pos</th>
+<th>additional_info</th>
+<th>acquisition_info</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>18710504</td>
+<td>0</td>
+<td>Thu</td>
+<td>CL1</td>
+<td>na</td>
+<td>1</td>
+<td>FW1</td>
+<td>na</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>54.0</td>
+<td>D</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>FOR01</td>
+<td>200.0</td>
+<td>120.0</td>
+<td>000000000</td>
+<td>010010000</td>
+<td>30.0</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>-1.0</td>
+<td>6.0</td>
+<td>1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>9.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>31.0</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>-1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>boakj901</td>
+<td>John Boake</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>paboc101</td>
+<td>Charlie Pabor</td>
+<td>lennb101</td>
+<td>Bill Lennon</td>
+<td>mathb101</td>
+<td>Bobby Mathews</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>mathb101</td>
+<td>Bobby Mathews</td>
+<td>whitd102</td>
+<td>Deacon White</td>
+<td>2.0</td>
+<td>kimbg101</td>
+<td>Gene Kimball</td>
+<td>4.0</td>
+<td>paboc101</td>
+<td>Charlie Pabor</td>
+<td>7.0</td>
+<td>allia101</td>
+<td>Art Allison</td>
+<td>8.0</td>
+<td>white104</td>
+<td>Elmer White</td>
+<td>9.0</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>1.0</td>
+<td>sutte101</td>
+<td>Ezra Sutton</td>
+<td>5.0</td>
+<td>carlj102</td>
+<td>Jim Carleton</td>
+<td>3.0</td>
+<td>bassj101</td>
+<td>John Bass</td>
+<td>6.0</td>
+<td>selmf101</td>
+<td>Frank Sellman</td>
+<td>5.0</td>
+<td>mathb101</td>
+<td>Bobby Mathews</td>
+<td>1.0</td>
+<td>foraj101</td>
+<td>Jim Foran</td>
+<td>3.0</td>
+<td>goldw101</td>
+<td>Wally Goldsmith</td>
+<td>6.0</td>
+<td>lennb101</td>
+<td>Bill Lennon</td>
+<td>2.0</td>
+<td>caret101</td>
+<td>Tom Carey</td>
+<td>4.0</td>
+<td>mince101</td>
+<td>Ed Mincher</td>
+<td>7.0</td>
+<td>mcdej101</td>
+<td>James McDermott</td>
+<td>8.0</td>
+<td>kellb105</td>
+<td>Bill Kelly</td>
+<td>9.0</td>
+<td>NaN</td>
+<td>Y</td>
+</tr>
+<tr>
+<th>1</th>
+<td>18710505</td>
+<td>0</td>
+<td>Fri</td>
+<td>BS1</td>
+<td>na</td>
+<td>1</td>
+<td>WS3</td>
+<td>na</td>
+<td>1</td>
+<td>20</td>
+<td>18</td>
+<td>54.0</td>
+<td>D</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>WAS01</td>
+<td>5000.0</td>
+<td>145.0</td>
+<td>107000435</td>
+<td>640113030</td>
+<td>41.0</td>
+<td>13.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>18.0</td>
+<td>-1.0</td>
+<td>5.0</td>
+<td>3.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>12.0</td>
+<td>1.0</td>
+<td>6.0</td>
+<td>6.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>13.0</td>
+<td>10.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>49.0</td>
+<td>14.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>11.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>10.0</td>
+<td>-1.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>14.0</td>
+<td>1.0</td>
+<td>7.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>20.0</td>
+<td>10.0</td>
+<td>2.0</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>dobsh901</td>
+<td>Henry Dobson</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>wrigh101</td>
+<td>Harry Wright</td>
+<td>younn801</td>
+<td>Nick Young</td>
+<td>spala101</td>
+<td>Al Spalding</td>
+<td>braia102</td>
+<td>Asa Brainard</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>spala101</td>
+<td>Al Spalding</td>
+<td>braia102</td>
+<td>Asa Brainard</td>
+<td>wrigg101</td>
+<td>George Wright</td>
+<td>6.0</td>
+<td>barnr102</td>
+<td>Ross Barnes</td>
+<td>4.0</td>
+<td>birdd102</td>
+<td>Dave Birdsall</td>
+<td>9.0</td>
+<td>mcvec101</td>
+<td>Cal McVey</td>
+<td>2.0</td>
+<td>wrigh101</td>
+<td>Harry Wright</td>
+<td>8.0</td>
+<td>goulc101</td>
+<td>Charlie Gould</td>
+<td>3.0</td>
+<td>schah101</td>
+<td>Harry Schafer</td>
+<td>5.0</td>
+<td>conef101</td>
+<td>Fred Cone</td>
+<td>7.0</td>
+<td>spala101</td>
+<td>Al Spalding</td>
+<td>1.0</td>
+<td>watef102</td>
+<td>Fred Waterman</td>
+<td>5.0</td>
+<td>forcd101</td>
+<td>Davy Force</td>
+<td>6.0</td>
+<td>mille105</td>
+<td>Everett Mills</td>
+<td>3.0</td>
+<td>allid101</td>
+<td>Doug Allison</td>
+<td>2.0</td>
+<td>hallg101</td>
+<td>George Hall</td>
+<td>7.0</td>
+<td>leona101</td>
+<td>Andy Leonard</td>
+<td>4.0</td>
+<td>braia102</td>
+<td>Asa Brainard</td>
+<td>1.0</td>
+<td>burrh101</td>
+<td>Henry Burroughs</td>
+<td>9.0</td>
+<td>berth101</td>
+<td>Henry Berthrong</td>
+<td>8.0</td>
+<td>HTBF</td>
+<td>Y</td>
+</tr>
+<tr>
+<th>2</th>
+<td>18710506</td>
+<td>0</td>
+<td>Sat</td>
+<td>CL1</td>
+<td>na</td>
+<td>2</td>
+<td>RC1</td>
+<td>na</td>
+<td>1</td>
+<td>12</td>
+<td>4</td>
+<td>54.0</td>
+<td>D</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>RCK01</td>
+<td>1000.0</td>
+<td>140.0</td>
+<td>610020003</td>
+<td>010020100</td>
+<td>49.0</td>
+<td>11.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>-1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>10.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>12.0</td>
+<td>8.0</td>
+<td>5.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>36.0</td>
+<td>7.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>-1.0</td>
+<td>3.0</td>
+<td>5.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>12.0</td>
+<td>13.0</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>mawnj901</td>
+<td>J.H. Manny</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>paboc101</td>
+<td>Charlie Pabor</td>
+<td>hasts101</td>
+<td>Scott Hastings</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>fishc102</td>
+<td>Cherokee Fisher</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>fishc102</td>
+<td>Cherokee Fisher</td>
+<td>whitd102</td>
+<td>Deacon White</td>
+<td>2.0</td>
+<td>kimbg101</td>
+<td>Gene Kimball</td>
+<td>4.0</td>
+<td>paboc101</td>
+<td>Charlie Pabor</td>
+<td>7.0</td>
+<td>allia101</td>
+<td>Art Allison</td>
+<td>8.0</td>
+<td>white104</td>
+<td>Elmer White</td>
+<td>9.0</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>1.0</td>
+<td>sutte101</td>
+<td>Ezra Sutton</td>
+<td>5.0</td>
+<td>carlj102</td>
+<td>Jim Carleton</td>
+<td>3.0</td>
+<td>bassj101</td>
+<td>John Bass</td>
+<td>6.0</td>
+<td>mackd101</td>
+<td>Denny Mack</td>
+<td>3.0</td>
+<td>addyb101</td>
+<td>Bob Addy</td>
+<td>4.0</td>
+<td>fishc102</td>
+<td>Cherokee Fisher</td>
+<td>1.0</td>
+<td>hasts101</td>
+<td>Scott Hastings</td>
+<td>8.0</td>
+<td>ham-r101</td>
+<td>Ralph Ham</td>
+<td>5.0</td>
+<td>ansoc101</td>
+<td>Cap Anson</td>
+<td>2.0</td>
+<td>sagep101</td>
+<td>Pony Sager</td>
+<td>6.0</td>
+<td>birdg101</td>
+<td>George Bird</td>
+<td>7.0</td>
+<td>stirg101</td>
+<td>Gat Stires</td>
+<td>9.0</td>
+<td>NaN</td>
+<td>Y</td>
+</tr>
+<tr>
+<th>3</th>
+<td>18710508</td>
+<td>0</td>
+<td>Mon</td>
+<td>CL1</td>
+<td>na</td>
+<td>3</td>
+<td>CH1</td>
+<td>na</td>
+<td>1</td>
+<td>12</td>
+<td>14</td>
+<td>54.0</td>
+<td>D</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>CHI01</td>
+<td>5000.0</td>
+<td>150.0</td>
+<td>101403111</td>
+<td>077000000</td>
+<td>46.0</td>
+<td>15.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>10.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>-1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>7.0</td>
+<td>1.0</td>
+<td>6.0</td>
+<td>6.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>15.0</td>
+<td>11.0</td>
+<td>6.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>43.0</td>
+<td>11.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>4.0</td>
+<td>-1.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>6.0</td>
+<td>1.0</td>
+<td>4.0</td>
+<td>4.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>14.0</td>
+<td>7.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>willg901</td>
+<td>Gardner Willard</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>paboc101</td>
+<td>Charlie Pabor</td>
+<td>woodj106</td>
+<td>Jimmy Wood</td>
+<td>zettg101</td>
+<td>George Zettlein</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>zettg101</td>
+<td>George Zettlein</td>
+<td>whitd102</td>
+<td>Deacon White</td>
+<td>2.0</td>
+<td>kimbg101</td>
+<td>Gene Kimball</td>
+<td>4.0</td>
+<td>paboc101</td>
+<td>Charlie Pabor</td>
+<td>7.0</td>
+<td>allia101</td>
+<td>Art Allison</td>
+<td>8.0</td>
+<td>white104</td>
+<td>Elmer White</td>
+<td>9.0</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>1.0</td>
+<td>sutte101</td>
+<td>Ezra Sutton</td>
+<td>5.0</td>
+<td>carlj102</td>
+<td>Jim Carleton</td>
+<td>3.0</td>
+<td>bassj101</td>
+<td>John Bass</td>
+<td>6.0</td>
+<td>mcatb101</td>
+<td>Bub McAtee</td>
+<td>3.0</td>
+<td>kingm101</td>
+<td>Marshall King</td>
+<td>8.0</td>
+<td>hodec101</td>
+<td>Charlie Hodes</td>
+<td>2.0</td>
+<td>woodj106</td>
+<td>Jimmy Wood</td>
+<td>4.0</td>
+<td>simmj101</td>
+<td>Joe Simmons</td>
+<td>9.0</td>
+<td>folet101</td>
+<td>Tom Foley</td>
+<td>7.0</td>
+<td>duffe101</td>
+<td>Ed Duffy</td>
+<td>6.0</td>
+<td>pinke101</td>
+<td>Ed Pinkham</td>
+<td>5.0</td>
+<td>zettg101</td>
+<td>George Zettlein</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>Y</td>
+</tr>
+<tr>
+<th>4</th>
+<td>18710509</td>
+<td>0</td>
+<td>Tue</td>
+<td>BS1</td>
+<td>na</td>
+<td>2</td>
+<td>TRO</td>
+<td>na</td>
+<td>1</td>
+<td>9</td>
+<td>5</td>
+<td>54.0</td>
+<td>D</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>TRO01</td>
+<td>3250.0</td>
+<td>145.0</td>
+<td>000002232</td>
+<td>101003000</td>
+<td>46.0</td>
+<td>17.0</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>6.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>-1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>12.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>12.0</td>
+<td>5.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>36.0</td>
+<td>9.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>-1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>7.0</td>
+<td>1.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>11.0</td>
+<td>7.0</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>leroi901</td>
+<td>Isaac Leroy</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>wrigh101</td>
+<td>Harry Wright</td>
+<td>pikel101</td>
+<td>Lip Pike</td>
+<td>spala101</td>
+<td>Al Spalding</td>
+<td>mcmuj101</td>
+<td>John McMullin</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>spala101</td>
+<td>Al Spalding</td>
+<td>mcmuj101</td>
+<td>John McMullin</td>
+<td>wrigg101</td>
+<td>George Wright</td>
+<td>6.0</td>
+<td>barnr102</td>
+<td>Ross Barnes</td>
+<td>4.0</td>
+<td>birdd102</td>
+<td>Dave Birdsall</td>
+<td>9.0</td>
+<td>mcvec101</td>
+<td>Cal McVey</td>
+<td>2.0</td>
+<td>wrigh101</td>
+<td>Harry Wright</td>
+<td>8.0</td>
+<td>goulc101</td>
+<td>Charlie Gould</td>
+<td>3.0</td>
+<td>schah101</td>
+<td>Harry Schafer</td>
+<td>5.0</td>
+<td>conef101</td>
+<td>Fred Cone</td>
+<td>7.0</td>
+<td>spala101</td>
+<td>Al Spalding</td>
+<td>1.0</td>
+<td>flync101</td>
+<td>Clipper Flynn</td>
+<td>9.0</td>
+<td>mcgem101</td>
+<td>Mike McGeary</td>
+<td>2.0</td>
+<td>yorkt101</td>
+<td>Tom York</td>
+<td>8.0</td>
+<td>mcmuj101</td>
+<td>John McMullin</td>
+<td>1.0</td>
+<td>kings101</td>
+<td>Steve King</td>
+<td>7.0</td>
+<td>beave101</td>
+<td>Edward Beavens</td>
+<td>4.0</td>
+<td>bells101</td>
+<td>Steve Bellan</td>
+<td>5.0</td>
+<td>pikel101</td>
+<td>Lip Pike</td>
+<td>3.0</td>
+<td>cravb101</td>
+<td>Bill Craver</td>
+<td>6.0</td>
+<td>HTBF</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We've summarized some of the important columns below, however if you'd like to see a guide to all columns we have created a <a href="https://data.world/dataquest/mlb-game-logs/workspace/data-dictionary">data dictionary for the whole data set</a>:</p>
+<ul>
+<li><code>date</code> — Date of the game.</li>
+<li><code>v_name</code> — Visiting team name.</li>
+<li><code>v_league</code> — Visiting team league.</li>
+<li><code>h_name</code> — Home team name.</li>
+<li><code>h_league</code> — Home team league.</li>
+<li><code>v_score</code> — Visiting team score.</li>
+<li><code>h_score</code> — Home team score.</li>
+<li><code>v_line_score</code> — Visiting team line score, eg <code>010000(10)00</code>.</li>
+<li><code>h_line_score</code> — Home team line score, eg <code>010000(10)0X</code>.</li>
+<li><code>park_id</code> — ID of the park where the game was held.</li>
+<li><code>attendance</code>— Game attendance.</li>
+</ul>
+<p>We can use the <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.info.html"><code>DataFrame.info()</code></a> method to give us some high level information about our dataframe, including its size, information about data types and memory usage.</p>
+<p>By default, pandas approximates of the memory usage of the dataframe to save time.  Because we're interested in accuracy, we'll set the <code>memory_usage</code> parameter to <code>'deep'</code> to get an accurate number.</p>
+<pre class=" language-python"><code class=" language-python">gl<span class="token punctuation">.</span>info<span class="token punctuation">(</span>memory_usage<span class="token operator">=</span><span class="token string">'deep'</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 171907 entries, 0 to 171906
+Columns: 161 entries, date to acquisition_info
+dtypes: float64(77), int64(6), object(78)
+memory usage: 861.6 MB
+</code></pre>
+<p>We can see that we have 171,907 rows and 161 columns. Pandas has automatically detected types for us, with 83 numeric columns and 78 object columns. Object columns are used for strings or where a column contains mixed data types.</p>
+<p>So we can get a better understanding of where we can reduce this memory usage, let's take a look into how pandas stores data in memory.</p>
+<h2 id="theinternalrepresentationofadataframe">The Internal Representation of a Dataframe</h2>
+<p>Under the hood, pandas groups the columns into blocks of values of the same type.  Here's a preview of how pandas stores the first twelve columns of our dataframe.</p>
+<img class="full-width" src="assets/1543296706-0f968dbe592d5fe3819f28a5cd885c6e.png">
+<p></p>
+<p>You'll notice that the blocks don't maintain references to the column names.  This is because blocks are optimized for storing the actual values in the dataframe.  The <a href="https://github.com/pandas-dev/pandas/blob/master/pandas/core/internals.py#L2691">BlockManager class</a> is responsible for maintaining the mapping between the row and column indexes and the actual blocks. It acts as an API that provides access to the underlying data.  Whenever we select, edit, or delete values, the dataframe class interfaces with the BlockManager class to translate our requests to function and method calls.</p>
+<p>Each type has a specialized class in the <a href="https://github.com/pandas-dev/pandas/blob/master/pandas/core/internals.py"><code>pandas.core.internals</code></a> module.  Pandas uses the ObjectBlock class to represent the block containing string columns, and the FloatBlock class to represent the block containing float columns.  For blocks representing numeric values like integers and floats, pandas combines the columns and stores them as a NumPy ndarray.  The NumPy ndarray is built around a C array, and the values are stored in a contiguous block of memory.  Due to this storage scheme, accessing a slice of values is incredibly fast.</p>
+<p>Because each data type is stored separately, we're going to examine the memory usage by data type.  Let's start by looking at the average memory usage for data type.</p>
+<pre class=" language-python"><code class=" language-python"><span class="token keyword">for</span> dtype <span class="token keyword">in</span> <span class="token punctuation">[</span><span class="token string">'float'</span><span class="token punctuation">,</span><span class="token string">'int'</span><span class="token punctuation">,</span><span class="token string">'object'</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+    selected_dtype <span class="token operator">=</span> gl<span class="token punctuation">.</span>select_dtypes<span class="token punctuation">(</span>include<span class="token operator">=</span><span class="token punctuation">[</span>dtype<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    mean_usage_b <span class="token operator">=</span> selected_dtype<span class="token punctuation">.</span>memory_usage<span class="token punctuation">(</span>deep<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    mean_usage_mb <span class="token operator">=</span> mean_usage_b <span class="token operator">/</span> <span class="token number">1024</span> <span class="token operator">**</span> <span class="token number">2</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Average memory usage for {} columns: {:03.2f} MB"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>dtype<span class="token punctuation">,</span>mean_usage_mb<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>Average memory usage for float columns: 1.29 MB
+Average memory usage for int columns: 1.12 MB
+Average memory usage for object columns: 9.53 MB
+</code></pre>
+<p>Immediately we can see that most of our memory is used by our 78 <code>object</code> columns.  We'll look at those later, but first lets see if we can improve on the memory usage for our numeric columns.</p>
+<h2 id="understandingsubtypes">Understanding Subtypes</h2>
+<p>As we mentioned briefly before, under the hood pandas represents numeric values as NumPy ndarrays and stores them in a continuous block of memory. This storage model consumes less space and allows us to access the values themselves quickly. Because pandas represents each value of the same type using the same number of bytes, and a NumPy ndarray stores the number of values, pandas can return the number of bytes a numeric column consumes quickly and accurately.</p>
+<p>Many types in pandas have multiple subtypes that can use fewer bytes to represent each value. For example, the <code>float</code> type has the <code>float16</code>, <code>float32</code>, and <code>float64</code> subtypes. The number portion of a type's  name indicates the number of bits that type uses to represent values. For example, the subtypes we just listed use <code>2</code>, <code>4</code>, <code>8</code> and  <code>16</code> bytes, respectively. The following table shows the subtypes for the most common pandas types:</p>
+<div>
+<table>
+<thead>
+<tr>
+<th>memory usage</th>
+<th>float</th>
+<th>int</th>
+<th>uint</th>
+<th>datetime</th>
+<th>bool</th>
+<th>object</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 bytes</td>
+<td></td>
+<td>int8</td>
+<td>uint8</td>
+<td></td>
+<td>bool</td>
+<td></td>
+</tr>
+<tr>
+<td>2 bytes</td>
+<td>float16</td>
+<td>int16</td>
+<td>uint16</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4 bytes</td>
+<td>float32</td>
+<td>int32</td>
+<td>uint32</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8 bytes</td>
+<td>float64</td>
+<td>int64</td>
+<td>uint64</td>
+<td>datetime64</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>variable</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>object</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>An <code>int8</code> value uses <code>1</code> byte (or <code>8</code> bits) to store a value, and can represent <code>256</code> values (<code>2^8</code>) in binary. This means that we can use this subtype to represent values ranging from <code>-128</code> to <code>127</code> (including <code>0</code>).</p>
+<p>We can use the <a href="https://docs.scipy.org/doc/numpy-1.10.0/reference/generated/numpy.iinfo.html"><code>numpy.iinfo</code></a> class to verify the minimum and maximum values for each integer subtype. Let's look at an example:</p>
+<pre class=" language-python"><code class=" language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+int_types <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"uint8"</span><span class="token punctuation">,</span> <span class="token string">"int8"</span><span class="token punctuation">,</span> <span class="token string">"int16"</span><span class="token punctuation">]</span>
+<span class="token keyword">for</span> it <span class="token keyword">in</span> int_types<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>np<span class="token punctuation">.</span>iinfo<span class="token punctuation">(</span>it<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>Machine parameters for uint8
+---------------------------------------------------------------
+min = 0
+max = 255
+---------------------------------------------------------------
+
+Machine parameters for int8
+---------------------------------------------------------------
+min = -128
+max = 127
+---------------------------------------------------------------
+
+Machine parameters for int16
+---------------------------------------------------------------
+min = -32768
+max = 32767
+---------------------------------------------------------------
+</code></pre>
+<p>We can see here the difference between <code>uint</code> (unsigned integers) and <code>int</code> (signed integers).  Both types have the same capacity for storage, but by only storing positive values, unsigned integers allow us to be more efficient with our storage of columns that only contain positive values.</p>
+<h2 id="optimizingnumericcolumnswithsubtypes">Optimizing Numeric Columns with Subtypes</h2>
+<p>We can use the function <code>pd.to_numeric()</code> to <strong>downcast</strong> our numeric types.  We'll use <code>DataFrame.select_dtypes</code> to select only the integer columns, then we'll optimize the types and compare the memory usage.</p>
+<pre class=" language-python"><code class=" language-python"><span class="token comment"># We're going to be calculating memory usage a lot,</span>
+<span class="token comment"># so we'll create a function to save us some time!</span>
+
+<span class="token keyword">def</span> <span class="token function">mem_usage</span><span class="token punctuation">(</span>pandas_obj<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> <span class="token builtin">isinstance</span><span class="token punctuation">(</span>pandas_obj<span class="token punctuation">,</span>pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        usage_b <span class="token operator">=</span> pandas_obj<span class="token punctuation">.</span>memory_usage<span class="token punctuation">(</span>deep<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span> <span class="token comment"># we assume if not a df it's a series</span>
+        usage_b <span class="token operator">=</span> pandas_obj<span class="token punctuation">.</span>memory_usage<span class="token punctuation">(</span>deep<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    usage_mb <span class="token operator">=</span> usage_b <span class="token operator">/</span> <span class="token number">1024</span> <span class="token operator">**</span> <span class="token number">2</span> <span class="token comment"># convert bytes to megabytes</span>
+    <span class="token keyword">return</span> <span class="token string">"{:03.2f} MB"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>usage_mb<span class="token punctuation">)</span>
+
+gl_int <span class="token operator">=</span> gl<span class="token punctuation">.</span>select_dtypes<span class="token punctuation">(</span>include<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'int'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+converted_int <span class="token operator">=</span> gl_int<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span>pd<span class="token punctuation">.</span>to_numeric<span class="token punctuation">,</span>downcast<span class="token operator">=</span><span class="token string">'unsigned'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>gl_int<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>converted_int<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+compare_ints <span class="token operator">=</span> pd<span class="token punctuation">.</span>concat<span class="token punctuation">(</span><span class="token punctuation">[</span>gl_int<span class="token punctuation">.</span>dtypes<span class="token punctuation">,</span>converted_int<span class="token punctuation">.</span>dtypes<span class="token punctuation">]</span><span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+compare_ints<span class="token punctuation">.</span>columns <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'before'</span><span class="token punctuation">,</span><span class="token string">'after'</span><span class="token punctuation">]</span>
+compare_ints<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span>pd<span class="token punctuation">.</span>Series<span class="token punctuation">.</span>value_counts<span class="token punctuation">)</span>
+</code></pre>
+<pre><code>7.87 MB
+1.48 MB
+</code></pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>before</th>
+<th>after</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>uint8</th>
+<td>NaN</td>
+<td>5.0</td>
+</tr>
+<tr>
+<th>uint32</th>
+<td>NaN</td>
+<td>1.0</td>
+</tr>
+<tr>
+<th>int64</th>
+<td>6.0</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We can see a drop from 7.9 to 1.5 megabytes in memory usage, which is a more than 80% reduction.  The overall impact on our original dataframe isn't massive though, because there are so few integer columns.</p>
+<p>Lets do the same thing with our float columns.</p>
+<pre class=" language-python"><code class=" language-python">gl_float <span class="token operator">=</span> gl<span class="token punctuation">.</span>select_dtypes<span class="token punctuation">(</span>include<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'float'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+converted_float <span class="token operator">=</span> gl_float<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span>pd<span class="token punctuation">.</span>to_numeric<span class="token punctuation">,</span>downcast<span class="token operator">=</span><span class="token string">'float'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>gl_float<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>converted_float<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+compare_floats <span class="token operator">=</span> pd<span class="token punctuation">.</span>concat<span class="token punctuation">(</span><span class="token punctuation">[</span>gl_float<span class="token punctuation">.</span>dtypes<span class="token punctuation">,</span>converted_float<span class="token punctuation">.</span>dtypes<span class="token punctuation">]</span><span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+compare_floats<span class="token punctuation">.</span>columns <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'before'</span><span class="token punctuation">,</span><span class="token string">'after'</span><span class="token punctuation">]</span>
+compare_floats<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span>pd<span class="token punctuation">.</span>Series<span class="token punctuation">.</span>value_counts<span class="token punctuation">)</span>
+</code></pre>
+<pre><code>100.99 MB
+50.49 MB
+</code></pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>before</th>
+<th>after</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>float32</th>
+<td>NaN</td>
+<td>77.0</td>
+</tr>
+<tr>
+<th>float64</th>
+<td>77.0</td>
+<td>NaN</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We can see that all our float columns were converted from <code>float64</code> to <code>float32</code>, giving us a 50% reduction in memory usage.</p>
+<p>Let's create a copy of our original dataframe, assign these optimized numeric columns in place of the originals, and see what our overall memory usage is now.</p>
+<pre class=" language-python"><code class=" language-python">optimized_gl <span class="token operator">=</span> gl<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+optimized_gl<span class="token punctuation">[</span>converted_int<span class="token punctuation">.</span>columns<span class="token punctuation">]</span> <span class="token operator">=</span> converted_int
+optimized_gl<span class="token punctuation">[</span>converted_float<span class="token punctuation">.</span>columns<span class="token punctuation">]</span> <span class="token operator">=</span> converted_float
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>gl<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>optimized_gl<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>861.57 MB
+</code></pre>
+<pre><code>804.69 MB
+</code></pre>
+<p>While we've dramatically reduced the memory usage of our numeric columns, overall we've only reduced the memory usage of our dataframe by 7%.  Most of our gains are going to come from optimizing the object types.</p>
+<p>Before we do, let's take a closer look at how strings are stored in pandas compared to the numeric types</p>
+<h2 id="comparingnumerictostringstorage">Comparing Numeric to String storage</h2>
+<p>The <code>object</code> type represents values using Python string objects, partly due to the lack of support for missing string values in NumPy. Because Python is a high-level, interpreted language, it doesn't have fine grained-control over how values in memory are stored.</p>
+<p>This limitation causes strings to be stored in a fragmented way that consumes more memory and is slower to access. Each element in an object column is really a pointer that contains the "address" for the actual value's location in memory.</p>
+<p>Below is a diagram showing how numeric data is stored in NumPy data types vs how strings are stored using Python's inbuilt types.</p>
+<img class="full-width" src="assets/1543296706-0d226f6266ce4b480e6013f434db3f2a.png">
+<p style="font-size:smaller;"><i>Diagram adapted from the excellent post <a href="https://jakevdp.github.io/blog/2014/05/09/why-python-is-slow/">Why Python Is Slow</a>.</i></p>
+<p>You may have noticed our chart earlier described <code>object</code> types as using a variable amount of memory. While each pointer takes up 1 byte of memory, each actual string value uses the same amount of memory that string would use if stored individually in Python.  Let's use <code>sys.getsizeof()</code> to prove that out, first by looking at individual strings, and then items in a pandas series.</p>
+<pre class=" language-python"><code class=" language-python"><span class="token keyword">from</span> sys <span class="token keyword">import</span> getsizeof
+
+s1 <span class="token operator">=</span> <span class="token string">'working out'</span>
+s2 <span class="token operator">=</span> <span class="token string">'memory usage for'</span>
+s3 <span class="token operator">=</span> <span class="token string">'strings in python is fun!'</span>
+s4 <span class="token operator">=</span> <span class="token string">'strings in python is fun!'</span>
+
+<span class="token keyword">for</span> s <span class="token keyword">in</span> <span class="token punctuation">[</span>s1<span class="token punctuation">,</span> s2<span class="token punctuation">,</span> s3<span class="token punctuation">,</span> s4<span class="token punctuation">]</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>getsizeof<span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>60
+65
+74
+74
+</code></pre>
+<pre class=" language-python"><code class=" language-python">obj_series <span class="token operator">=</span> pd<span class="token punctuation">.</span>Series<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'working out'</span><span class="token punctuation">,</span>
+                          <span class="token string">'memory usage for'</span><span class="token punctuation">,</span>
+                          <span class="token string">'strings in python is fun!'</span><span class="token punctuation">,</span>
+                          <span class="token string">'strings in python is fun!'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+obj_series<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span>getsizeof<span class="token punctuation">)</span>
+</code></pre>
+<pre><code>0    60
+1    65
+2    74
+3    74
+dtype: int64
+</code></pre>
+<p>You can see that the size of strings when stored in a pandas series are identical to their usage as separate strings in Python.</p>
+<h2 id="optimizingobjecttypesusingcategoricals">Optimizing object types using categoricals</h2>
+<p>Pandas introduced <a href="http://pandas.pydata.org/pandas-docs/stable/categorical.html">Categoricals</a> in version 0.15.  The <code>category</code> type uses integer values under the hood to represent the values in a column, rather than the raw values.  Pandas uses a separate mapping dictionary that maps the integer values to the raw ones. This arrangement is useful whenever a column contains a limited set of values. When we convert a column to the <code>category</code> dtype, pandas uses the most space efficient <code>int</code> subtype that can represent all of the unique values in a column.</p>
+<img class="full-width" src="assets/1543296706-75ba8c9132c7769a11f7c6e4b411e721.svg">
+<p>To get an overview of where we might be able to use this type to reduce memory, let's take a look at the number of unique values of each of our object types.</p>
+<pre class=" language-python"><code class=" language-python">gl_obj <span class="token operator">=</span> gl<span class="token punctuation">.</span>select_dtypes<span class="token punctuation">(</span>include<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'object'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
+gl_obj<span class="token punctuation">.</span>describe<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>day_of_week</th>
+<th>v_name</th>
+<th>v_league</th>
+<th>h_name</th>
+<th>h_league</th>
+<th>day_night</th>
+<th>completion</th>
+<th>forefeit</th>
+<th>protest</th>
+<th>park_id</th>
+<th>v_line_score</th>
+<th>h_line_score</th>
+<th>hp_umpire_id</th>
+<th>hp_umpire_name</th>
+<th>1b_umpire_id</th>
+<th>1b_umpire_name</th>
+<th>2b_umpire_id</th>
+<th>2b_umpire_name</th>
+<th>3b_umpire_id</th>
+<th>3b_umpire_name</th>
+<th>lf_umpire_id</th>
+<th>lf_umpire_name</th>
+<th>rf_umpire_id</th>
+<th>rf_umpire_name</th>
+<th>v_manager_id</th>
+<th>v_manager_name</th>
+<th>h_manager_id</th>
+<th>h_manager_name</th>
+<th>winning_pitcher_id</th>
+<th>winning_pitcher_name</th>
+<th>losing_pitcher_id</th>
+<th>losing_pitcher_name</th>
+<th>saving_pitcher_id</th>
+<th>saving_pitcher_name</th>
+<th>winning_rbi_batter_id</th>
+<th>winning_rbi_batter_id_name</th>
+<th>v_starting_pitcher_id</th>
+<th>v_starting_pitcher_name</th>
+<th>h_starting_pitcher_id</th>
+<th>h_starting_pitcher_name</th>
+<th>v_player_1_id</th>
+<th>v_player_1_name</th>
+<th>v_player_2_id</th>
+<th>v_player_2_name</th>
+<th>v_player_3_id</th>
+<th>v_player_3_name</th>
+<th>v_player_4_id</th>
+<th>v_player_4_name</th>
+<th>v_player_5_id</th>
+<th>v_player_5_name</th>
+<th>v_player_6_id</th>
+<th>v_player_6_name</th>
+<th>v_player_7_id</th>
+<th>v_player_7_name</th>
+<th>v_player_8_id</th>
+<th>v_player_8_name</th>
+<th>v_player_9_id</th>
+<th>v_player_9_name</th>
+<th>h_player_1_id</th>
+<th>h_player_1_name</th>
+<th>h_player_2_id</th>
+<th>h_player_2_name</th>
+<th>h_player_3_id</th>
+<th>h_player_3_name</th>
+<th>h_player_4_id</th>
+<th>h_player_4_name</th>
+<th>h_player_5_id</th>
+<th>h_player_5_name</th>
+<th>h_player_6_id</th>
+<th>h_player_6_name</th>
+<th>h_player_7_id</th>
+<th>h_player_7_name</th>
+<th>h_player_8_id</th>
+<th>h_player_8_name</th>
+<th>h_player_9_id</th>
+<th>h_player_9_name</th>
+<th>additional_info</th>
+<th>acquisition_info</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>count</th>
+<td>171907</td>
+<td>171907</td>
+<td>171907</td>
+<td>171907</td>
+<td>171907</td>
+<td>140150</td>
+<td>116</td>
+<td>145</td>
+<td>180</td>
+<td>171907</td>
+<td>147271</td>
+<td>147271</td>
+<td>171888</td>
+<td>171891</td>
+<td>147040</td>
+<td>171891</td>
+<td>88540</td>
+<td>171127</td>
+<td>116723</td>
+<td>171135</td>
+<td>203</td>
+<td>171902</td>
+<td>9</td>
+<td>171902</td>
+<td>171907</td>
+<td>171907</td>
+<td>171907</td>
+<td>171907</td>
+<td>140229</td>
+<td>140229</td>
+<td>140229</td>
+<td>140229</td>
+<td>48018</td>
+<td>140838</td>
+<td>105699</td>
+<td>140838</td>
+<td>171863</td>
+<td>171863</td>
+<td>171863</td>
+<td>171863</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140835</td>
+<td>140835</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>140838</td>
+<td>1456</td>
+<td>140841</td>
+</tr>
+<tr>
+<th>unique</th>
+<td>7</td>
+<td>148</td>
+<td>7</td>
+<td>148</td>
+<td>7</td>
+<td>2</td>
+<td>116</td>
+<td>3</td>
+<td>5</td>
+<td>245</td>
+<td>36367</td>
+<td>37859</td>
+<td>1149</td>
+<td>1146</td>
+<td>678</td>
+<td>678</td>
+<td>324</td>
+<td>325</td>
+<td>362</td>
+<td>363</td>
+<td>31</td>
+<td>32</td>
+<td>8</td>
+<td>9</td>
+<td>648</td>
+<td>648</td>
+<td>659</td>
+<td>659</td>
+<td>5123</td>
+<td>5084</td>
+<td>5653</td>
+<td>5606</td>
+<td>3133</td>
+<td>3117</td>
+<td>5739</td>
+<td>5674</td>
+<td>5193</td>
+<td>5129</td>
+<td>5170</td>
+<td>5125</td>
+<td>2870</td>
+<td>2847</td>
+<td>3709</td>
+<td>3673</td>
+<td>2989</td>
+<td>2964</td>
+<td>2581</td>
+<td>2563</td>
+<td>3757</td>
+<td>3722</td>
+<td>4794</td>
+<td>4736</td>
+<td>5301</td>
+<td>5241</td>
+<td>4812</td>
+<td>4763</td>
+<td>5643</td>
+<td>5585</td>
+<td>2802</td>
+<td>2782</td>
+<td>3648</td>
+<td>3614</td>
+<td>2881</td>
+<td>2858</td>
+<td>2533</td>
+<td>2517</td>
+<td>3696</td>
+<td>3660</td>
+<td>4774</td>
+<td>4720</td>
+<td>5253</td>
+<td>5197</td>
+<td>4760</td>
+<td>4710</td>
+<td>5193</td>
+<td>5142</td>
+<td>332</td>
+<td>1</td>
+</tr>
+<tr>
+<th>top</th>
+<td>Sat</td>
+<td>CHN</td>
+<td>NL</td>
+<td>CHN</td>
+<td>NL</td>
+<td>D</td>
+<td>19510725,,6,6,46</td>
+<td>H</td>
+<td>V</td>
+<td>STL07</td>
+<td>000000000</td>
+<td>000000000</td>
+<td>klemb901</td>
+<td>Bill Klem</td>
+<td>connt901</td>
+<td>(none)</td>
+<td>westj901</td>
+<td>(none)</td>
+<td>mcgob901</td>
+<td>(none)</td>
+<td>sudoe901</td>
+<td>(none)</td>
+<td>gormt101</td>
+<td>(none)</td>
+<td>mackc101</td>
+<td>Connie Mack</td>
+<td>mackc101</td>
+<td>Connie Mack</td>
+<td>johnw102</td>
+<td>Walter Johnson</td>
+<td>rixee101</td>
+<td>Dutch Leonard</td>
+<td>rivem002</td>
+<td>(none)</td>
+<td>pujoa001</td>
+<td>(none)</td>
+<td>younc102</td>
+<td>Young</td>
+<td>younc102</td>
+<td>Young</td>
+<td>suzui001</td>
+<td>Ichiro Suzuki</td>
+<td>fox-n101</td>
+<td>Nellie Fox</td>
+<td>speat101</td>
+<td>Tris Speaker</td>
+<td>bottj101</td>
+<td>Jim Bottomley</td>
+<td>heilh101</td>
+<td>Harry Heilmann</td>
+<td>grimc101</td>
+<td>Charlie Grimm</td>
+<td>grimc101</td>
+<td>Charlie Grimm</td>
+<td>lopea102</td>
+<td>Al Lopez</td>
+<td>grifa001</td>
+<td>Alfredo Griffin</td>
+<td>suzui001</td>
+<td>Ichiro Suzuki</td>
+<td>fox-n101</td>
+<td>Nellie Fox</td>
+<td>speat101</td>
+<td>Tris Speaker</td>
+<td>gehrl101</td>
+<td>Lou Gehrig</td>
+<td>heilh101</td>
+<td>Harry Heilmann</td>
+<td>grimc101</td>
+<td>Charlie Grimm</td>
+<td>grimc101</td>
+<td>Charlie Grimm</td>
+<td>lopea102</td>
+<td>Al Lopez</td>
+<td>spahw101</td>
+<td>Warren Spahn</td>
+<td>HTBF</td>
+<td>Y</td>
+</tr>
+<tr>
+<th>freq</th>
+<td>28891</td>
+<td>8870</td>
+<td>88866</td>
+<td>9024</td>
+<td>88867</td>
+<td>82724</td>
+<td>1</td>
+<td>69</td>
+<td>90</td>
+<td>7022</td>
+<td>10102</td>
+<td>8028</td>
+<td>3545</td>
+<td>3545</td>
+<td>2029</td>
+<td>24851</td>
+<td>815</td>
+<td>82587</td>
+<td>1129</td>
+<td>54412</td>
+<td>30</td>
+<td>171699</td>
+<td>2</td>
+<td>171893</td>
+<td>3901</td>
+<td>3901</td>
+<td>3848</td>
+<td>3848</td>
+<td>385</td>
+<td>385</td>
+<td>251</td>
+<td>295</td>
+<td>523</td>
+<td>92820</td>
+<td>288</td>
+<td>35139</td>
+<td>403</td>
+<td>441</td>
+<td>412</td>
+<td>451</td>
+<td>893</td>
+<td>893</td>
+<td>852</td>
+<td>852</td>
+<td>1224</td>
+<td>1224</td>
+<td>816</td>
+<td>816</td>
+<td>663</td>
+<td>663</td>
+<td>465</td>
+<td>465</td>
+<td>485</td>
+<td>485</td>
+<td>687</td>
+<td>687</td>
+<td>333</td>
+<td>333</td>
+<td>927</td>
+<td>927</td>
+<td>859</td>
+<td>859</td>
+<td>1165</td>
+<td>1165</td>
+<td>752</td>
+<td>752</td>
+<td>612</td>
+<td>612</td>
+<td>427</td>
+<td>427</td>
+<td>491</td>
+<td>491</td>
+<td>676</td>
+<td>676</td>
+<td>339</td>
+<td>339</td>
+<td>1112</td>
+<td>140841</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>A quick glance reveals many columns where there are few unique values relative to the overall ~172,000 games in our data set.</p>
+<p>Before we dive too far in, we'll start by selecting just one of our object columns, and looking at what happens behind the scenes when we convert it to the categorical type. We'll use the second column of our data set, <code>day_of_week</code>.</p>
+<p>Looking at the table above. we can see that it only contains seven unique values.  We'll convert it to categorical by using the <code>.astype()</code> method.</p>
+<pre class=" language-python"><code class=" language-python">dow <span class="token operator">=</span> gl_obj<span class="token punctuation">.</span>day_of_week
+<span class="token keyword">print</span><span class="token punctuation">(</span>dow<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+dow_cat <span class="token operator">=</span> dow<span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'category'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>dow_cat<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>0    Thu
+1    Fri
+2    Sat
+3    Mon
+4    Tue
+Name: day_of_week, dtype: object
+0    Thu
+1    Fri
+2    Sat
+3    Mon
+4    Tue
+Name: day_of_week, dtype: category
+Categories (7, object): [Fri, Mon, Sat, Sun, Thu, Tue, Wed]
+</code></pre>
+<p>As you can see, apart from the fact that the type of the column has changed, the data looks exactly the same.  Let's take a look under the hood at what's happening.</p>
+<p>In the following code, we use the <code>Series.cat.codes</code> attribute to return the integer values the <code>category</code> type uses to represent each value.</p>
+<pre class=" language-python"><code class=" language-python">dow_cat<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>cat<span class="token punctuation">.</span>codes
+</code></pre>
+<pre><code>0    4
+1    0
+2    2
+3    1
+4    5
+dtype: int8
+</code></pre>
+<p>You can see that each unique value has been assigned an integer, and that the underlying datatype for the column is now <code>int8</code>.  This column doesn't have any missing values, but if it did, the <code>category</code> subtype handles missing values by setting them to <code>-1</code>.</p>
+<p>Lastly, let's look at the memory usage for this column before and after converting to the  <code>category</code> type.</p>
+<pre class=" language-python"><code class=" language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>dow<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>dow_cat<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>9.84 MB
+0.16 MB
+</code></pre>
+<p>We've gone from 9.8MB of memory usage to 0.16MB of memory usage, or a 98% reduction!  Note that this particular column probably represents one of our best-case scenarios - a column with ~172,000 items of which there only 7 unique values.</p>
+<p>While converting all of the columns to this type sounds appealing, it's important to be aware of the trade-offs. The biggest one is the inability to perform numerical computations. We can't do arithmetic with <code>category</code> columns or use methods like <code>Series.min()</code> and <code>Series.max()</code> without converting to a true numeric dtype first.</p>
+<p>We should stick to using the <code>category</code> type primarily for <code>object</code> columns where less than 50% of the values are unique. If all of the values in a column are unique, the <code>category</code> type will end up using <em>more</em> memory. That's because the column is storing all of the raw string values in addition to the integer category codes. You can read more about the limitations of the <code>category</code> type in the <a href="http://pandas.pydata.org/pandas-docs/stable/categorical.html#gotchas">pandas documentation</a>.</p>
+<p>We'll write a loop to iterate over each <code>object</code> column, check if the number of unique values is less than 50%, and if so, convert it to the category type.</p>
+<pre class=" language-python"><code class=" language-python">converted_obj <span class="token operator">=</span> pd<span class="token punctuation">.</span>DataFrame<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">for</span> col <span class="token keyword">in</span> gl_obj<span class="token punctuation">.</span>columns<span class="token punctuation">:</span>
+    num_unique_values <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>gl_obj<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span>unique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    num_total_values <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>gl_obj<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> num_unique_values <span class="token operator">/</span> num_total_values <span class="token operator">&lt;</span> <span class="token number">0.5</span><span class="token punctuation">:</span>
+        converted_obj<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span>col<span class="token punctuation">]</span> <span class="token operator">=</span> gl_obj<span class="token punctuation">[</span>col<span class="token punctuation">]</span><span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">'category'</span><span class="token punctuation">)</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        converted_obj<span class="token punctuation">.</span>loc<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span>col<span class="token punctuation">]</span> <span class="token operator">=</span> gl_obj<span class="token punctuation">[</span>col<span class="token punctuation">]</span>
+</code></pre>
+<p>As before,</p>
+<pre class=" language-python"><code class=" language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>gl_obj<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>converted_obj<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+compare_obj <span class="token operator">=</span> pd<span class="token punctuation">.</span>concat<span class="token punctuation">(</span><span class="token punctuation">[</span>gl_obj<span class="token punctuation">.</span>dtypes<span class="token punctuation">,</span>converted_obj<span class="token punctuation">.</span>dtypes<span class="token punctuation">]</span><span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+compare_obj<span class="token punctuation">.</span>columns <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'before'</span><span class="token punctuation">,</span><span class="token string">'after'</span><span class="token punctuation">]</span>
+compare_obj<span class="token punctuation">.</span><span class="token builtin">apply</span><span class="token punctuation">(</span>pd<span class="token punctuation">.</span>Series<span class="token punctuation">.</span>value_counts<span class="token punctuation">)</span>
+</code></pre>
+<pre><code>752.72 MB
+51.67 MB
+</code></pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>before</th>
+<th>after</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>object</th>
+<td>78.0</td>
+<td>NaN</td>
+</tr>
+<tr>
+<th>category</th>
+<td>NaN</td>
+<td>78.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>In this case, all our object columns were converted to the <code>category</code> type, however this won't be the case with all data sets, so you should be sure to use the process above to check.</p>
+<p>What's more, our memory usage for our <code>object</code> columns has gone from 752MB to 52MB, or a reduction of 93%. Let's combine this with the rest of our dataframe and see where we sit in relation to the 861MB memory usage we started with.</p>
+<pre class=" language-python"><code class=" language-python">optimized_gl<span class="token punctuation">[</span>converted_obj<span class="token punctuation">.</span>columns<span class="token punctuation">]</span> <span class="token operator">=</span> converted_obj
+
+mem_usage<span class="token punctuation">(</span>optimized_gl<span class="token punctuation">)</span>
+</code></pre>
+<pre><code>'103.64 MB'
+</code></pre>
+<p>Wow, we've really made some progress!  We have one more optimization we can make - if you remember back to our table of types, there was a <code>datetime</code> type that we can use for the first column of our data set.</p>
+<pre class=" language-python"><code class=" language-python">date <span class="token operator">=</span> optimized_gl<span class="token punctuation">.</span>date
+<span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>date<span class="token punctuation">)</span><span class="token punctuation">)</span>
+date<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>0.66 MB
+</code></pre>
+<pre><code>0    18710504
+1    18710505
+2    18710506
+3    18710508
+4    18710509
+Name: date, dtype: uint32
+</code></pre>
+<p>You may remember that this was read in as an integer type and already optimized to <code>unint32</code>.  Because of this, converting it to <code>datetime</code> will actually double it's memory usage, as the <code>datetime</code> type is a 64 bit type.  There's value in converting it to <code>datetime</code> anyway since it will allow us to more easily do time series analysis.</p>
+<p>We'll convert using <code>pandas.to_datetime()</code> function, using the <code>format</code> parameter to tell it that our date data is stored <code>YYYY-MM-DD</code>.</p>
+<pre class=" language-python"><code class=" language-python">optimized_gl<span class="token punctuation">[</span><span class="token string">'date'</span><span class="token punctuation">]</span> <span class="token operator">=</span> pd<span class="token punctuation">.</span>to_datetime<span class="token punctuation">(</span>date<span class="token punctuation">,</span><span class="token builtin">format</span><span class="token operator">=</span><span class="token string">'%Y%m%d'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>optimized_gl<span class="token punctuation">)</span><span class="token punctuation">)</span>
+optimized_gl<span class="token punctuation">.</span>date<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>104.29 MB
+</code></pre>
+<pre><code>0   1871-05-04
+1   1871-05-05
+2   1871-05-06
+3   1871-05-08
+4   1871-05-09
+Name: date, dtype: datetime64[ns]
+</code></pre>
+<h2 id="selectingtypeswhilereadingthedatain">Selecting Types While Reading the Data In</h2>
+<p>So far, we've explored ways to reduce the memory footprint of an <strong>existing</strong> dataframe. By reading the dataframe in first and then iterating on ways to save memory, we were able to understand the amount of memory we can expect to save from each optimization better. As we mentioned earlier in the mission, however, we often won't have enough memory to represent all the values in a data set. How can we apply memory-saving techniques when we can't even create the dataframe in the first place?</p>
+<p>Fortunately, we can specify the optimal column types when we read the data set in. The <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html">pandas.read_csv()</a> function has a few different parameters that allow us to do this. The <code>dtype</code> parameter accepts a dictionary that has (string) column names as the keys and NumPy type objects as the values.</p>
+<p>First, we'll store the final types of every column in a dictionary with keys for column names, first removing the date column since that needs to be treated separately.</p>
+<pre class=" language-python"><code class=" language-python">dtypes <span class="token operator">=</span> optimized_gl<span class="token punctuation">.</span>drop<span class="token punctuation">(</span><span class="token string">'date'</span><span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>dtypes
+
+dtypes_col <span class="token operator">=</span> dtypes<span class="token punctuation">.</span>index
+dtypes_type <span class="token operator">=</span> <span class="token punctuation">[</span>i<span class="token punctuation">.</span>name <span class="token keyword">for</span> i <span class="token keyword">in</span> dtypes<span class="token punctuation">.</span>values<span class="token punctuation">]</span>
+
+column_types <span class="token operator">=</span> <span class="token builtin">dict</span><span class="token punctuation">(</span><span class="token builtin">zip</span><span class="token punctuation">(</span>dtypes_col<span class="token punctuation">,</span> dtypes_type<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># rather than print all 161 items, we'll</span>
+<span class="token comment"># sample 10 key/value pairs from the dict</span>
+<span class="token comment"># and print it nicely using prettyprint</span>
+
+preview <span class="token operator">=</span> first2pairs <span class="token operator">=</span> <span class="token punctuation">{</span>key<span class="token punctuation">:</span>value <span class="token keyword">for</span> key<span class="token punctuation">,</span>value <span class="token keyword">in</span> <span class="token builtin">list</span><span class="token punctuation">(</span>column_types<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">}</span>
+<span class="token keyword">import</span> pprint
+pp <span class="token operator">=</span> pp <span class="token operator">=</span> pprint<span class="token punctuation">.</span>PrettyPrinter<span class="token punctuation">(</span>indent<span class="token operator">=</span><span class="token number">4</span><span class="token punctuation">)</span>
+pp<span class="token punctuation">.</span>pprint<span class="token punctuation">(</span>preview<span class="token punctuation">)</span>
+</code></pre>
+<pre><code>{   'acquisition_info': 'category',
+    'h_caught_stealing': 'float32',
+    'h_player_1_name': 'category',
+    'h_player_9_name': 'category',
+    'v_assists': 'float32',
+    'v_first_catcher_interference': 'float32',
+    'v_grounded_into_double': 'float32',
+    'v_player_1_id': 'category',
+    'v_player_3_id': 'category',
+    'v_player_5_id': 'category'}
+</code></pre>
+<p>Now we can use the dictionary, along with a few parameters for the date to read in the data with the correct types in a few lines:</p>
+<pre class=" language-python"><code class=" language-python">read_and_optimized <span class="token operator">=</span> pd<span class="token punctuation">.</span>read_csv<span class="token punctuation">(</span><span class="token string">'game_logs.csv'</span><span class="token punctuation">,</span>dtype<span class="token operator">=</span>column_types<span class="token punctuation">,</span>parse_dates<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">'date'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>infer_datetime_format<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span>mem_usage<span class="token punctuation">(</span>read_and_optimized<span class="token punctuation">)</span><span class="token punctuation">)</span>
+read_and_optimized<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<pre><code>104.28 MB
+</code></pre>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+
+<table border="1" class="dataframe">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>date</th>
+<th>number_of_game</th>
+<th>day_of_week</th>
+<th>v_name</th>
+<th>v_league</th>
+<th>v_game_number</th>
+<th>h_name</th>
+<th>h_league</th>
+<th>h_game_number</th>
+<th>v_score</th>
+<th>h_score</th>
+<th>length_outs</th>
+<th>day_night</th>
+<th>completion</th>
+<th>forefeit</th>
+<th>protest</th>
+<th>park_id</th>
+<th>attendance</th>
+<th>length_minutes</th>
+<th>v_line_score</th>
+<th>h_line_score</th>
+<th>v_at_bats</th>
+<th>v_hits</th>
+<th>v_doubles</th>
+<th>v_triples</th>
+<th>v_homeruns</th>
+<th>v_rbi</th>
+<th>v_sacrifice_hits</th>
+<th>v_sacrifice_flies</th>
+<th>v_hit_by_pitch</th>
+<th>v_walks</th>
+<th>v_intentional walks</th>
+<th>v_strikeouts</th>
+<th>v_stolen_bases</th>
+<th>v_caught_stealing</th>
+<th>v_grounded_into_double</th>
+<th>v_first_catcher_interference</th>
+<th>v_left_on_base</th>
+<th>v_pitchers_used</th>
+<th>v_individual_earned_runs</th>
+<th>v_team_earned_runs</th>
+<th>v_wild_pitches</th>
+<th>v_balks</th>
+<th>v_putouts</th>
+<th>v_assists</th>
+<th>v_errors</th>
+<th>v_passed_balls</th>
+<th>v_double_plays</th>
+<th>v_triple_plays</th>
+<th>h_at_bats</th>
+<th>h_hits</th>
+<th>h_doubles</th>
+<th>h_triples</th>
+<th>h_homeruns</th>
+<th>h_rbi</th>
+<th>h_sacrifice_hits</th>
+<th>h_sacrifice_flies</th>
+<th>h_hit_by_pitch</th>
+<th>h_walks</th>
+<th>h_intentional walks</th>
+<th>h_strikeouts</th>
+<th>h_stolen_bases</th>
+<th>h_caught_stealing</th>
+<th>h_grounded_into_double</th>
+<th>h_first_catcher_interference</th>
+<th>h_left_on_base</th>
+<th>h_pitchers_used</th>
+<th>h_individual_earned_runs</th>
+<th>h_team_earned_runs</th>
+<th>h_wild_pitches</th>
+<th>h_balks</th>
+<th>h_putouts</th>
+<th>h_assists</th>
+<th>h_errors</th>
+<th>h_passed_balls</th>
+<th>h_double_plays</th>
+<th>h_triple_plays</th>
+<th>hp_umpire_id</th>
+<th>hp_umpire_name</th>
+<th>1b_umpire_id</th>
+<th>1b_umpire_name</th>
+<th>2b_umpire_id</th>
+<th>2b_umpire_name</th>
+<th>3b_umpire_id</th>
+<th>3b_umpire_name</th>
+<th>lf_umpire_id</th>
+<th>lf_umpire_name</th>
+<th>rf_umpire_id</th>
+<th>rf_umpire_name</th>
+<th>v_manager_id</th>
+<th>v_manager_name</th>
+<th>h_manager_id</th>
+<th>h_manager_name</th>
+<th>winning_pitcher_id</th>
+<th>winning_pitcher_name</th>
+<th>losing_pitcher_id</th>
+<th>losing_pitcher_name</th>
+<th>saving_pitcher_id</th>
+<th>saving_pitcher_name</th>
+<th>winning_rbi_batter_id</th>
+<th>winning_rbi_batter_id_name</th>
+<th>v_starting_pitcher_id</th>
+<th>v_starting_pitcher_name</th>
+<th>h_starting_pitcher_id</th>
+<th>h_starting_pitcher_name</th>
+<th>v_player_1_id</th>
+<th>v_player_1_name</th>
+<th>v_player_1_def_pos</th>
+<th>v_player_2_id</th>
+<th>v_player_2_name</th>
+<th>v_player_2_def_pos</th>
+<th>v_player_3_id</th>
+<th>v_player_3_name</th>
+<th>v_player_3_def_pos</th>
+<th>v_player_4_id</th>
+<th>v_player_4_name</th>
+<th>v_player_4_def_pos</th>
+<th>v_player_5_id</th>
+<th>v_player_5_name</th>
+<th>v_player_5_def_pos</th>
+<th>v_player_6_id</th>
+<th>v_player_6_name</th>
+<th>v_player_6_def_pos</th>
+<th>v_player_7_id</th>
+<th>v_player_7_name</th>
+<th>v_player_7_def_pos</th>
+<th>v_player_8_id</th>
+<th>v_player_8_name</th>
+<th>v_player_8_def_pos</th>
+<th>v_player_9_id</th>
+<th>v_player_9_name</th>
+<th>v_player_9_def_pos</th>
+<th>h_player_1_id</th>
+<th>h_player_1_name</th>
+<th>h_player_1_def_pos</th>
+<th>h_player_2_id</th>
+<th>h_player_2_name</th>
+<th>h_player_2_def_pos</th>
+<th>h_player_3_id</th>
+<th>h_player_3_name</th>
+<th>h_player_3_def_pos</th>
+<th>h_player_4_id</th>
+<th>h_player_4_name</th>
+<th>h_player_4_def_pos</th>
+<th>h_player_5_id</th>
+<th>h_player_5_name</th>
+<th>h_player_5_def_pos</th>
+<th>h_player_6_id</th>
+<th>h_player_6_name</th>
+<th>h_player_6_def_pos</th>
+<th>h_player_7_id</th>
+<th>h_player_7_name</th>
+<th>h_player_7_def_pos</th>
+<th>h_player_8_id</th>
+<th>h_player_8_name</th>
+<th>h_player_8_def_pos</th>
+<th>h_player_9_id</th>
+<th>h_player_9_name</th>
+<th>h_player_9_def_pos</th>
+<th>additional_info</th>
+<th>acquisition_info</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>1871-05-04</td>
+<td>0</td>
+<td>Thu</td>
+<td>CL1</td>
+<td>na</td>
+<td>1</td>
+<td>FW1</td>
+<td>na</td>
+<td>1</td>
+<td>0</td>
+<td>2</td>
+<td>54.0</td>
+<td>D</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>FOR01</td>
+<td>200.0</td>
+<td>120.0</td>
+<td>000000000</td>
+<td>010010000</td>
+<td>30.0</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>-1.0</td>
+<td>6.0</td>
+<td>1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>9.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>31.0</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>-1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>boakj901</td>
+<td>John Boake</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>paboc101</td>
+<td>Charlie Pabor</td>
+<td>lennb101</td>
+<td>Bill Lennon</td>
+<td>mathb101</td>
+<td>Bobby Mathews</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>mathb101</td>
+<td>Bobby Mathews</td>
+<td>whitd102</td>
+<td>Deacon White</td>
+<td>2.0</td>
+<td>kimbg101</td>
+<td>Gene Kimball</td>
+<td>4.0</td>
+<td>paboc101</td>
+<td>Charlie Pabor</td>
+<td>7.0</td>
+<td>allia101</td>
+<td>Art Allison</td>
+<td>8.0</td>
+<td>white104</td>
+<td>Elmer White</td>
+<td>9.0</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>1.0</td>
+<td>sutte101</td>
+<td>Ezra Sutton</td>
+<td>5.0</td>
+<td>carlj102</td>
+<td>Jim Carleton</td>
+<td>3.0</td>
+<td>bassj101</td>
+<td>John Bass</td>
+<td>6.0</td>
+<td>selmf101</td>
+<td>Frank Sellman</td>
+<td>5.0</td>
+<td>mathb101</td>
+<td>Bobby Mathews</td>
+<td>1.0</td>
+<td>foraj101</td>
+<td>Jim Foran</td>
+<td>3.0</td>
+<td>goldw101</td>
+<td>Wally Goldsmith</td>
+<td>6.0</td>
+<td>lennb101</td>
+<td>Bill Lennon</td>
+<td>2.0</td>
+<td>caret101</td>
+<td>Tom Carey</td>
+<td>4.0</td>
+<td>mince101</td>
+<td>Ed Mincher</td>
+<td>7.0</td>
+<td>mcdej101</td>
+<td>James McDermott</td>
+<td>8.0</td>
+<td>kellb105</td>
+<td>Bill Kelly</td>
+<td>9.0</td>
+<td>NaN</td>
+<td>Y</td>
+</tr>
+<tr>
+<th>1</th>
+<td>1871-05-05</td>
+<td>0</td>
+<td>Fri</td>
+<td>BS1</td>
+<td>na</td>
+<td>1</td>
+<td>WS3</td>
+<td>na</td>
+<td>1</td>
+<td>20</td>
+<td>18</td>
+<td>54.0</td>
+<td>D</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>WAS01</td>
+<td>5000.0</td>
+<td>145.0</td>
+<td>107000435</td>
+<td>640113030</td>
+<td>41.0</td>
+<td>13.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>13.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>18.0</td>
+<td>-1.0</td>
+<td>5.0</td>
+<td>3.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>12.0</td>
+<td>1.0</td>
+<td>6.0</td>
+<td>6.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>13.0</td>
+<td>10.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>49.0</td>
+<td>14.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>11.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>10.0</td>
+<td>-1.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>14.0</td>
+<td>1.0</td>
+<td>7.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>20.0</td>
+<td>10.0</td>
+<td>2.0</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>dobsh901</td>
+<td>Henry Dobson</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>wrigh101</td>
+<td>Harry Wright</td>
+<td>younn801</td>
+<td>Nick Young</td>
+<td>spala101</td>
+<td>Al Spalding</td>
+<td>braia102</td>
+<td>Asa Brainard</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>spala101</td>
+<td>Al Spalding</td>
+<td>braia102</td>
+<td>Asa Brainard</td>
+<td>wrigg101</td>
+<td>George Wright</td>
+<td>6.0</td>
+<td>barnr102</td>
+<td>Ross Barnes</td>
+<td>4.0</td>
+<td>birdd102</td>
+<td>Dave Birdsall</td>
+<td>9.0</td>
+<td>mcvec101</td>
+<td>Cal McVey</td>
+<td>2.0</td>
+<td>wrigh101</td>
+<td>Harry Wright</td>
+<td>8.0</td>
+<td>goulc101</td>
+<td>Charlie Gould</td>
+<td>3.0</td>
+<td>schah101</td>
+<td>Harry Schafer</td>
+<td>5.0</td>
+<td>conef101</td>
+<td>Fred Cone</td>
+<td>7.0</td>
+<td>spala101</td>
+<td>Al Spalding</td>
+<td>1.0</td>
+<td>watef102</td>
+<td>Fred Waterman</td>
+<td>5.0</td>
+<td>forcd101</td>
+<td>Davy Force</td>
+<td>6.0</td>
+<td>mille105</td>
+<td>Everett Mills</td>
+<td>3.0</td>
+<td>allid101</td>
+<td>Doug Allison</td>
+<td>2.0</td>
+<td>hallg101</td>
+<td>George Hall</td>
+<td>7.0</td>
+<td>leona101</td>
+<td>Andy Leonard</td>
+<td>4.0</td>
+<td>braia102</td>
+<td>Asa Brainard</td>
+<td>1.0</td>
+<td>burrh101</td>
+<td>Henry Burroughs</td>
+<td>9.0</td>
+<td>berth101</td>
+<td>Henry Berthrong</td>
+<td>8.0</td>
+<td>HTBF</td>
+<td>Y</td>
+</tr>
+<tr>
+<th>2</th>
+<td>1871-05-06</td>
+<td>0</td>
+<td>Sat</td>
+<td>CL1</td>
+<td>na</td>
+<td>2</td>
+<td>RC1</td>
+<td>na</td>
+<td>1</td>
+<td>12</td>
+<td>4</td>
+<td>54.0</td>
+<td>D</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>RCK01</td>
+<td>1000.0</td>
+<td>140.0</td>
+<td>610020003</td>
+<td>010020100</td>
+<td>49.0</td>
+<td>11.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>-1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>10.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>12.0</td>
+<td>8.0</td>
+<td>5.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>36.0</td>
+<td>7.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>-1.0</td>
+<td>3.0</td>
+<td>5.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>12.0</td>
+<td>13.0</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>mawnj901</td>
+<td>J.H. Manny</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>paboc101</td>
+<td>Charlie Pabor</td>
+<td>hasts101</td>
+<td>Scott Hastings</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>fishc102</td>
+<td>Cherokee Fisher</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>fishc102</td>
+<td>Cherokee Fisher</td>
+<td>whitd102</td>
+<td>Deacon White</td>
+<td>2.0</td>
+<td>kimbg101</td>
+<td>Gene Kimball</td>
+<td>4.0</td>
+<td>paboc101</td>
+<td>Charlie Pabor</td>
+<td>7.0</td>
+<td>allia101</td>
+<td>Art Allison</td>
+<td>8.0</td>
+<td>white104</td>
+<td>Elmer White</td>
+<td>9.0</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>1.0</td>
+<td>sutte101</td>
+<td>Ezra Sutton</td>
+<td>5.0</td>
+<td>carlj102</td>
+<td>Jim Carleton</td>
+<td>3.0</td>
+<td>bassj101</td>
+<td>John Bass</td>
+<td>6.0</td>
+<td>mackd101</td>
+<td>Denny Mack</td>
+<td>3.0</td>
+<td>addyb101</td>
+<td>Bob Addy</td>
+<td>4.0</td>
+<td>fishc102</td>
+<td>Cherokee Fisher</td>
+<td>1.0</td>
+<td>hasts101</td>
+<td>Scott Hastings</td>
+<td>8.0</td>
+<td>ham-r101</td>
+<td>Ralph Ham</td>
+<td>5.0</td>
+<td>ansoc101</td>
+<td>Cap Anson</td>
+<td>2.0</td>
+<td>sagep101</td>
+<td>Pony Sager</td>
+<td>6.0</td>
+<td>birdg101</td>
+<td>George Bird</td>
+<td>7.0</td>
+<td>stirg101</td>
+<td>Gat Stires</td>
+<td>9.0</td>
+<td>NaN</td>
+<td>Y</td>
+</tr>
+<tr>
+<th>3</th>
+<td>1871-05-08</td>
+<td>0</td>
+<td>Mon</td>
+<td>CL1</td>
+<td>na</td>
+<td>3</td>
+<td>CH1</td>
+<td>na</td>
+<td>1</td>
+<td>12</td>
+<td>14</td>
+<td>54.0</td>
+<td>D</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>CHI01</td>
+<td>5000.0</td>
+<td>150.0</td>
+<td>101403111</td>
+<td>077000000</td>
+<td>46.0</td>
+<td>15.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>10.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>-1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>7.0</td>
+<td>1.0</td>
+<td>6.0</td>
+<td>6.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>15.0</td>
+<td>11.0</td>
+<td>6.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>43.0</td>
+<td>11.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>4.0</td>
+<td>-1.0</td>
+<td>2.0</td>
+<td>1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>6.0</td>
+<td>1.0</td>
+<td>4.0</td>
+<td>4.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>14.0</td>
+<td>7.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>willg901</td>
+<td>Gardner Willard</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>paboc101</td>
+<td>Charlie Pabor</td>
+<td>woodj106</td>
+<td>Jimmy Wood</td>
+<td>zettg101</td>
+<td>George Zettlein</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>zettg101</td>
+<td>George Zettlein</td>
+<td>whitd102</td>
+<td>Deacon White</td>
+<td>2.0</td>
+<td>kimbg101</td>
+<td>Gene Kimball</td>
+<td>4.0</td>
+<td>paboc101</td>
+<td>Charlie Pabor</td>
+<td>7.0</td>
+<td>allia101</td>
+<td>Art Allison</td>
+<td>8.0</td>
+<td>white104</td>
+<td>Elmer White</td>
+<td>9.0</td>
+<td>prata101</td>
+<td>Al Pratt</td>
+<td>1.0</td>
+<td>sutte101</td>
+<td>Ezra Sutton</td>
+<td>5.0</td>
+<td>carlj102</td>
+<td>Jim Carleton</td>
+<td>3.0</td>
+<td>bassj101</td>
+<td>John Bass</td>
+<td>6.0</td>
+<td>mcatb101</td>
+<td>Bub McAtee</td>
+<td>3.0</td>
+<td>kingm101</td>
+<td>Marshall King</td>
+<td>8.0</td>
+<td>hodec101</td>
+<td>Charlie Hodes</td>
+<td>2.0</td>
+<td>woodj106</td>
+<td>Jimmy Wood</td>
+<td>4.0</td>
+<td>simmj101</td>
+<td>Joe Simmons</td>
+<td>9.0</td>
+<td>folet101</td>
+<td>Tom Foley</td>
+<td>7.0</td>
+<td>duffe101</td>
+<td>Ed Duffy</td>
+<td>6.0</td>
+<td>pinke101</td>
+<td>Ed Pinkham</td>
+<td>5.0</td>
+<td>zettg101</td>
+<td>George Zettlein</td>
+<td>1.0</td>
+<td>NaN</td>
+<td>Y</td>
+</tr>
+<tr>
+<th>4</th>
+<td>1871-05-09</td>
+<td>0</td>
+<td>Tue</td>
+<td>BS1</td>
+<td>na</td>
+<td>2</td>
+<td>TRO</td>
+<td>na</td>
+<td>1</td>
+<td>9</td>
+<td>5</td>
+<td>54.0</td>
+<td>D</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>TRO01</td>
+<td>3250.0</td>
+<td>145.0</td>
+<td>000002232</td>
+<td>101003000</td>
+<td>46.0</td>
+<td>17.0</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>6.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>-1.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>12.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>12.0</td>
+<td>5.0</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>36.0</td>
+<td>9.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>-1.0</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>-1.0</td>
+<td>7.0</td>
+<td>1.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>27.0</td>
+<td>11.0</td>
+<td>7.0</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>leroi901</td>
+<td>Isaac Leroy</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>wrigh101</td>
+<td>Harry Wright</td>
+<td>pikel101</td>
+<td>Lip Pike</td>
+<td>spala101</td>
+<td>Al Spalding</td>
+<td>mcmuj101</td>
+<td>John McMullin</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>NaN</td>
+<td>(none)</td>
+<td>spala101</td>
+<td>Al Spalding</td>
+<td>mcmuj101</td>
+<td>John McMullin</td>
+<td>wrigg101</td>
+<td>George Wright</td>
+<td>6.0</td>
+<td>barnr102</td>
+<td>Ross Barnes</td>
+<td>4.0</td>
+<td>birdd102</td>
+<td>Dave Birdsall</td>
+<td>9.0</td>
+<td>mcvec101</td>
+<td>Cal McVey</td>
+<td>2.0</td>
+<td>wrigh101</td>
+<td>Harry Wright</td>
+<td>8.0</td>
+<td>goulc101</td>
+<td>Charlie Gould</td>
+<td>3.0</td>
+<td>schah101</td>
+<td>Harry Schafer</td>
+<td>5.0</td>
+<td>conef101</td>
+<td>Fred Cone</td>
+<td>7.0</td>
+<td>spala101</td>
+<td>Al Spalding</td>
+<td>1.0</td>
+<td>flync101</td>
+<td>Clipper Flynn</td>
+<td>9.0</td>
+<td>mcgem101</td>
+<td>Mike McGeary</td>
+<td>2.0</td>
+<td>yorkt101</td>
+<td>Tom York</td>
+<td>8.0</td>
+<td>mcmuj101</td>
+<td>John McMullin</td>
+<td>1.0</td>
+<td>kings101</td>
+<td>Steve King</td>
+<td>7.0</td>
+<td>beave101</td>
+<td>Edward Beavens</td>
+<td>4.0</td>
+<td>bells101</td>
+<td>Steve Bellan</td>
+<td>5.0</td>
+<td>pikel101</td>
+<td>Lip Pike</td>
+<td>3.0</td>
+<td>cravb101</td>
+<td>Bill Craver</td>
+<td>6.0</td>
+<td>HTBF</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>By optimizing the columns, we've managed to reduce the memory usage in pandas from 861.6 MB to 104.28 MB - an impressive 88% reduction!</p>
+<h2 id="analyzingbaseballgames">Analyzing baseball games</h2>
+<p>Now that we've optimized our data, we can perform some analysis.  Let's start by looking at the distribution of game days.</p>
+<pre class=" language-python"><code class=" language-python">optimized_gl<span class="token punctuation">[</span><span class="token string">'year'</span><span class="token punctuation">]</span> <span class="token operator">=</span> optimized_gl<span class="token punctuation">.</span>date<span class="token punctuation">.</span>dt<span class="token punctuation">.</span>year
+games_per_day <span class="token operator">=</span> optimized_gl<span class="token punctuation">.</span>pivot_table<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">'year'</span><span class="token punctuation">,</span>columns<span class="token operator">=</span><span class="token string">'day_of_week'</span><span class="token punctuation">,</span>values<span class="token operator">=</span><span class="token string">'date'</span><span class="token punctuation">,</span>aggfunc<span class="token operator">=</span><span class="token builtin">len</span><span class="token punctuation">)</span>
+games_per_day <span class="token operator">=</span> games_per_day<span class="token punctuation">.</span>divide<span class="token punctuation">(</span>games_per_day<span class="token punctuation">.</span><span class="token builtin">sum</span><span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>axis<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+
+ax <span class="token operator">=</span> games_per_day<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>kind<span class="token operator">=</span><span class="token string">'area'</span><span class="token punctuation">,</span>stacked<span class="token operator">=</span><span class="token string">'true'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>legend<span class="token punctuation">(</span>loc<span class="token operator">=</span><span class="token string">'upper right'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_ylim<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<div class="output_png output_subarea ">
+<img src="assets/1543296706-91e9c3731a0c050c51e3131f8eec014f.png">
+</div>
+<p>We can see that before the 1920s, Sunday baseball games were rare on Sundays before coming gradually more popular through the latter half of last century.</p>
+<p>We can also see pretty clearly that the distribution of game days has been relatively static for the last 50 years.</p>
+<p>Let's also look at how game length has varied over the years.</p>
+<pre class=" language-python"><code class=" language-python">game_lengths <span class="token operator">=</span> optimized_gl<span class="token punctuation">.</span>pivot_table<span class="token punctuation">(</span>index<span class="token operator">=</span><span class="token string">'year'</span><span class="token punctuation">,</span> values<span class="token operator">=</span><span class="token string">'length_minutes'</span><span class="token punctuation">)</span>
+game_lengths<span class="token punctuation">.</span>reset_index<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>plot<span class="token punctuation">.</span>scatter<span class="token punctuation">(</span><span class="token string">'year'</span><span class="token punctuation">,</span><span class="token string">'length_minutes'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<div class="output_png output_subarea ">
+<img src="assets/1543296706-1ba85dc63e8a0c7bf7c7ed1c41638bfe.png">
+</div>
+<p>Looks like baseball games have continued to get longer from the 1940s onwards.</p>
+<h2 id="summaryandnextsteps">Summary and Next Steps</h2>
+<p>We've learned how pandas stores data using different types, and then we used that knowledge to reduce the memory usage of our pandas dataframe by almost 90%, just by using a few simple techniques:</p>
+<ul>
+<li>Downcasting numeric columns to more efficient types.</li>
+<li>Converting string columns to the categorical type.</li>
+</ul>
+<p>If you'd like to dive into working with larger data in pandas some more, a lot of the content in this blog post is available in our interactive course <a href="https://www.dataquest.io/m/163/optimizing-dataframe-memory-footprint/16/next-steps">Processing Large Datasets In Pandas Course</a>, which you can start for free.</p>
+</div></SECTION></ARTICLE></DIV></MAIN></DIV>
+      
+      
+    </div>
+  </body>
+</html>

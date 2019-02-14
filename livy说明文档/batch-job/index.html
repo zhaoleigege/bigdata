@@ -1,0 +1,555 @@
+
+<!DOCTYPE html>
+<html>
+  <!-- OriginalSrc: https://docs.microsoft.com/en-us/rest/api/hdinsightspark/hdinsight-spark-batch-job -->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Batch Job | Microsoft Docs</title>
+    
+<link rel="stylesheet" href="assets/1545821225-baa8f933d4d6f80a529bfc271ea8dd52.css">
+
+<link rel="stylesheet" href="assets/1545821225-8def68d8133f651514cf1a4d558eb671.css">
+
+<link rel="stylesheet" href="assets/1545821225-cf3596e23a81c496f07c69664ed1f073.css">
+<style>
+@media print {#ghostery-purple-box {display:none !important}}
+</style>
+<style>
+
+</style>
+<style>
+
+</style>
+<style>
+object,embed{                -webkit-animation-duration:.001s;-webkit-animation-name:playerInserted;                -ms-animation-duration:.001s;-ms-animation-name:playerInserted;                -o-animation-duration:.001s;-o-animation-name:playerInserted;                animation-duration:.001s;animation-name:playerInserted;}                @-webkit-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @-ms-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @-o-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}
+</style>
+
+    <style class="mx-wc-style">
+      .mx-wc-main img {max-width: 100%;}
+      .mx-wc-main{
+        box-sizing: content-box;
+        background-color: rgb(255, 255, 255) !important;
+        margin: 0 auto;
+        max-width: 700px;
+        padding: 15px 15px 80px 15px;
+      }
+
+      .mx-wc-main > .clipping-information{
+        text-align: left;
+        margin-top: 20px;
+        background-color: #eeeeee !important;
+        padding: 15px;
+        border-radius: 4px;
+        color: #333;
+        font-size: 14px !important;
+        line-height: 22px !important;
+      }
+      .mx-wc-main > .clipping-information a {
+        color: blue !important;
+        text-decoration: underline !important;
+      }
+      .mx-wc-main > .clipping-information label {
+        display: inline;
+        text-transform: none;
+      }
+      .mx-wc-main > .clipping-information label > code {
+        padding: 2px 8px;
+        background-color: rgba(200, 200, 200, 0.7)!important;
+        font-size: 14px;
+      }
+
+    </style>
+  </head>
+  <body style="background-color: #464646 !important; min-height: 100%; height: auto;" id="" class="">
+    <div class="mx-wc-main">
+      <DIV class="mainContainer uhf-container  has-top-padding  has-default-focus" data-bi-name="body" style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><DIV class="columns " style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><SECTION class="primary-holder column is-two-thirds-tablet is-three-quarters-desktop" style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><DIV class="columns " style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><DIV id="main-column" class="column  is-full is-four-fifths-desktop " style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><main id="main" role="main" class="content mx-wc-selected-elem" data-bi-name="content" lang="en-us" dir="ltr" style="float: none; position: relative; top: 0px; left: 0px; margin: 0px; flex: unset; width: 100%; max-width: 100%; box-sizing: border-box;">
+
+
+
+						<h1 id="batch-job" sourcefile="docs-ref-conceptual/hdinsightspark/hdinsight-spark-batch-job.md" sourcestartlinenumber="10" sourceendlinenumber="10">Batch Job</h1>
+
+						<ul class="metadata page-metadata" data-bi-name="page info" lang="en-us" dir="ltr">
+							<li class="displayDate">
+								<time role="presentation" datetime="2016-11-16T00:00:00.000Z" data-article-date-source="ms.date">11/16/2016</time>
+							</li>
+								<li class="readingTime">
+									3 minutes to read
+								</li>
+							<li class="contributors-holder">
+								<span class="contributors-text">Contributors</span>
+								<ul class="contributors" data-bi-name="contributors">
+											<li><a href="https://github.com/JasonWHowell" title="Jason H" data-bi-name="contributorprofile"><img src="assets/1545821225-393254b1aff63c69375f4295fa621b3d.png" data-src="assets/1545821225-393254b1aff63c69375f4295fa621b3d.png" alt="Jason H"></a></li>
+											<li><a href="https://github.com/hellosnow" title="Huang Xueyuan(Jessie)" data-bi-name="contributorprofile"><img src="assets/1545821225-ad05565671430f1817ca729a8420ac0d.png" data-src="assets/1545821225-ad05565671430f1817ca729a8420ac0d.png" alt="Huang Xueyuan(Jessie)"></a></li>
+								</ul>
+							</li>
+
+						</ul>
+
+						
+
+
+
+						<!-- <content> -->
+							
+<h3 id="bk_common" class="heading-with-anchor"> Common parameters and headers</h3>
+<p> The following information is common to all tasks related to clusters that you might do:  </p>
+<ul>
+<li><p>Replace {cluster-endpoint} with the url of your cluster’s management endpoint. (for example, myendpoint.azurehdinsight.net)  </p>
+</li>
+<li><p>Replace {batch-id} with the batch ID returned on job submission.  </p>
+</li>
+<li><p>Set the Content-Type header to <strong>application/json</strong>.  </p>
+</li>
+<li><p>Authenticate with the endpoint using HTTP basic authentication.  </p>
+</li>
+</ul>
+<h2 id="create-a-new-batch-job" class="heading-with-anchor">Create a new batch job</h2>
+<p>Submit a new batch job from a jar.  </p>
+<h3 id="request" class="heading-with-anchor">Request</h3>
+<p> See <a href="#bk_common" data-linktype="self-bookmark">Common parameters and headers</a> for headers and parameters that are used by clusters.  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Request URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td><code>https://{cluster-endpoint}/livy/batches</code></td>
+</tr>
+</tbody>
+</table></div>
+<p> Following shows an example request to create a new batch job  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language">JSON</span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code class="lang-json">{  
+       <span class="hljs-attr">"file"</span> : <span class="hljs-string">"wasb://&lt;BlobStorageContainerName&gt;@&lt;StorageAccountName&gt;.blob.core.windows.net/sample.jar"</span>,  
+       <span class="hljs-attr">"args"</span> : [<span class="hljs-string">"arg0"</span>, <span class="hljs-string">"arg1"</span>],  
+       <span class="hljs-attr">"className"</span> : <span class="hljs-string">"com.sample.Job1"</span>,  
+       <span class="hljs-attr">"jars"</span> : [<span class="hljs-string">"wasb://&lt;BlobStorageContainerName&gt;@&lt;StorageAccountName&gt;.blob.core.windows.net/helper.jar"</span>],  
+       <span class="hljs-attr">"files"</span> : [<span class="hljs-string">"wasb://&lt;BlobStorageContainerName&gt;@&lt;StorageAccountName&gt;.blob.core.windows.net/config.xml"</span>],  
+       <span class="hljs-attr">"driverMemory"</span> : <span class="hljs-string">"1G"</span>,  
+       <span class="hljs-attr">"driverCores"</span> : <span class="hljs-number">2</span>,  
+       <span class="hljs-attr">"executorMemory"</span> : <span class="hljs-string">"1G"</span>,  
+       <span class="hljs-attr">"executorCores"</span> : <span class="hljs-number">10</span>,  
+       <span class="hljs-attr">"numExecutors"</span> : <span class="hljs-number">10</span>  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element Name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>proxyUser</td>
+<td>No</td>
+<td>String</td>
+<td>The user to impersonate that will execute the job</td>
+</tr>
+<tr>
+<td>file</td>
+<td>Yes</td>
+<td>String</td>
+<td>Path to the batch job’s jar.</td>
+</tr>
+<tr>
+<td>args</td>
+<td>No</td>
+<td>Array of String</td>
+<td>Command-line arguments passed to the batch job.</td>
+</tr>
+<tr>
+<td>className</td>
+<td>Yes</td>
+<td>String</td>
+<td>The class name of the main class.</td>
+</tr>
+<tr>
+<td>jars</td>
+<td>No</td>
+<td>Array of String</td>
+<td>Files to be placed on the java classpath</td>
+</tr>
+<tr>
+<td>pyFiles</td>
+<td>No</td>
+<td>Array of String</td>
+<td>Files to be placed on the PYTHONPATH</td>
+</tr>
+<tr>
+<td>files</td>
+<td>No</td>
+<td>Array of String</td>
+<td>Files to be placed in executor working directory</td>
+</tr>
+<tr>
+<td>driverMemory</td>
+<td>No</td>
+<td>String</td>
+<td>Memory for driver (1000M, 2G)</td>
+</tr>
+<tr>
+<td>driverCores</td>
+<td>No</td>
+<td>Integer</td>
+<td>Number of cores used by driver</td>
+</tr>
+<tr>
+<td>executorMemory</td>
+<td>No</td>
+<td>String</td>
+<td>Memory for executor (1000M, 2G)</td>
+</tr>
+<tr>
+<td>executorCores</td>
+<td>No</td>
+<td>Integer</td>
+<td>Number of cores used by executor</td>
+</tr>
+<tr>
+<td>numExecutors</td>
+<td>No</td>
+<td>Integer</td>
+<td>number of executors</td>
+</tr>
+<tr>
+<td>archives</td>
+<td>No</td>
+<td>Array of String</td>
+<td>Archives to be uncompressed (YARN mode only)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response" class="heading-with-anchor">Response</h3>
+<p> The operation will return 200 (OK) if the request is completed successfully  </p>
+<p> <strong>Status code:</strong> 200 OK  </p>
+<p> <strong>Response body:</strong>  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language"></span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code>{  
+   "id" : 1,  
+   "state" : "starting",  
+   "log" : ["logline"]  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element Name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>The batch session id</td>
+</tr>
+<tr>
+<td>log</td>
+<td>Yes</td>
+<td>Array of string</td>
+<td>Array of log lines for this batch job.</td>
+</tr>
+<tr>
+<td>state</td>
+<td>No</td>
+<td>String</td>
+<td>The session state. Possible value: [“starting”, “idle”, “error”]</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="get-the-full-log-of-a-batch-job" class="heading-with-anchor">Get the full log of a batch job</h2>
+<h3 id="request-1" class="heading-with-anchor">Request</h3>
+<p> See <a href="#bk_common" data-linktype="self-bookmark">Common parameters and headers</a> for headers and parameters that are used by clusters.  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Request URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>https://{cluster-endpoint}/livy/batches/{batch-id}/log</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response-1" class="heading-with-anchor">Response</h3>
+<p> If validation is complete and the request is accepted, the operation will return 200 (OK).  </p>
+<p> Status code: 200 OK  </p>
+<p> Response body:  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language"></span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code>{  
+"id" : 1,  
+"from":0,  
+"total":54  
+“log" : ["logline1", “logline2”]  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>The batch session id</td>
+</tr>
+<tr>
+<td>from</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>Offset</td>
+</tr>
+<tr>
+<td>size</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>Total number of lines</td>
+</tr>
+<tr>
+<td>log</td>
+<td>Yes</td>
+<td>Array of string</td>
+<td>Array of log lines for this batch job.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="get-the-state-of-a-batch-job" class="heading-with-anchor">Get the state of a batch job</h2>
+<h3 id="request-2" class="heading-with-anchor">Request</h3>
+<p> See Common parameters and headers for headers and parameters that are used by clusters.  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Request URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>https://{cluster-endpoint}/livy/batches/{batch-id}</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response-2" class="heading-with-anchor">Response</h3>
+<p> If validation is complete and the request is accepted, the operation will return 200 (OK).  </p>
+<p> Status code: 200 OK  </p>
+<p> Response body:  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language"></span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code>{  
+"id" : 1,  
+"state" : "starting",  
+“log" : ["logline"]  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>The batch session id</td>
+</tr>
+<tr>
+<td>log</td>
+<td>Yes</td>
+<td>Array of strings</td>
+<td>Array of log lines for this batch job.</td>
+</tr>
+<tr>
+<td>state</td>
+<td>Yes</td>
+<td>String</td>
+<td>The session state. Possible value: [“starting”, “idle”, “error”]</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="kill-a-batch-job" class="heading-with-anchor">Kill a batch job</h2>
+<h3 id="request-3" class="heading-with-anchor">Request</h3>
+<p> See <a href="#bk_common" data-linktype="self-bookmark">Common parameters and headers</a> for headers and parameters that are used by clusters.  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Request URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DELETE</td>
+<td><code>https://{cluster-endpoint}/livy/batches/{batch-id}</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response-3" class="heading-with-anchor">Response</h3>
+<p> If validation is complete and the request is accepted, the operation will return 200 (OK).  </p>
+<p> Status code: 200 OK  </p>
+<p> Response body:  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language"></span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code>{  
+"msg" : "deleted"  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Message</td>
+<td>Yes</td>
+<td>String</td>
+<td>The message of the delete.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="interactive-sessions" class="heading-with-anchor">Interactive sessions</h3>
+<ul>
+<li>Start, submit statement, retrieve statement results, and terminate an interactive session</li>
+</ul>
+<h2 id="return-all-active-batch-jobs" class="heading-with-anchor">Return all active batch jobs</h2>
+<h3 id="request-4" class="heading-with-anchor">Request</h3>
+<p> See <a href="#bk_common" data-linktype="self-bookmark">Common parameters and headers</a> for headers and parameters that are used by clusters.  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Request URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>https://{cluster-endpoint}/livy/batches</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response-4" class="heading-with-anchor">Response</h3>
+<p> If validation is complete and the request is accepted, the operation will return 200 (OK).  </p>
+<p> <strong>Status code</strong>: 200 OK  </p>
+<p> <strong>Response body:</strong>  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language">JSON</span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code class="lang-json">{  
+    <span class="hljs-attr">"from"</span> : <span class="hljs-number">0</span>,  
+    <span class="hljs-attr">"total"</span> : <span class="hljs-number">2</span>,  
+    <span class="hljs-attr">"sessions"</span> : [{  
+            <span class="hljs-attr">"id"</span> : <span class="hljs-number">1</span>,  
+            <span class="hljs-attr">"state"</span> : <span class="hljs-string">"starting"</span>,  
+            <span class="hljs-attr">"log"</span> : [<span class="hljs-string">"logline"</span>]  
+        }, {  
+            <span class="hljs-attr">"id"</span> : <span class="hljs-number">0</span>,  
+            <span class="hljs-attr">"state"</span> : <span class="hljs-string">"idle"</span>,  
+            <span class="hljs-attr">"log"</span> : [<span class="hljs-string">"logline"</span>]  
+        }  
+    ]  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>from</td>
+<td>Yes</td>
+<td>String</td>
+<td>Offset</td>
+</tr>
+<tr>
+<td>total</td>
+<td>Yes</td>
+<td>String</td>
+<td>Number of batches to return</td>
+</tr>
+<tr>
+<td>session</td>
+<td>Yes</td>
+<td>Array of Complex  Type (Batch)</td>
+<td>A list of active batch jobs</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="batch" class="heading-with-anchor">Batch</h4>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>The batch session id</td>
+</tr>
+<tr>
+<td>log</td>
+<td>Yes</td>
+<td>Array of strings</td>
+<td>Array of log lines for this batch job.</td>
+</tr>
+<tr>
+<td>state</td>
+<td>Yes</td>
+<td>String</td>
+<td>The session state. Possible value: [“starting”, “idle”, “error”]</td>
+</tr>
+</tbody>
+</table></div>
+
+  </body>
+</html>

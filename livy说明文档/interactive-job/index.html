@@ -1,0 +1,728 @@
+
+<!DOCTYPE html>
+<html>
+  <!-- OriginalSrc: https://docs.microsoft.com/en-us/rest/api/hdinsightspark/hdinsight-spark-interactive-session -->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Interactive session | Microsoft Docs</title>
+    
+<link rel="stylesheet" href="assets/1545821251-baa8f933d4d6f80a529bfc271ea8dd52.css">
+
+<link rel="stylesheet" href="assets/1545821251-8def68d8133f651514cf1a4d558eb671.css">
+
+<link rel="stylesheet" href="assets/1545821251-cf3596e23a81c496f07c69664ed1f073.css">
+<style>
+@media print {#ghostery-purple-box {display:none !important}}
+</style>
+<style>
+
+</style>
+<style>
+
+</style>
+<style>
+object,embed{                -webkit-animation-duration:.001s;-webkit-animation-name:playerInserted;                -ms-animation-duration:.001s;-ms-animation-name:playerInserted;                -o-animation-duration:.001s;-o-animation-name:playerInserted;                animation-duration:.001s;animation-name:playerInserted;}                @-webkit-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @-ms-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @-o-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}                @keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}
+</style>
+
+    <style class="mx-wc-style">
+      .mx-wc-main img {max-width: 100%;}
+      .mx-wc-main{
+        box-sizing: content-box;
+        background-color: rgb(255, 255, 255) !important;
+        margin: 0 auto;
+        max-width: 800px;
+        padding: 15px 15px 80px 15px;
+      }
+
+      .mx-wc-main > .clipping-information{
+        text-align: left;
+        margin-top: 20px;
+        background-color: #eeeeee !important;
+        padding: 15px;
+        border-radius: 4px;
+        color: #333;
+        font-size: 14px !important;
+        line-height: 22px !important;
+      }
+      .mx-wc-main > .clipping-information a {
+        color: blue !important;
+        text-decoration: underline !important;
+      }
+      .mx-wc-main > .clipping-information label {
+        display: inline;
+        text-transform: none;
+      }
+      .mx-wc-main > .clipping-information label > code {
+        padding: 2px 8px;
+        background-color: rgba(200, 200, 200, 0.7)!important;
+        font-size: 14px;
+      }
+
+    </style>
+  </head>
+  <body style="background-color: #464646 !important; min-height: 100%; height: auto;" id="" class="">
+    <div class="mx-wc-main">
+      <DIV class="mainContainer uhf-container  has-top-padding  has-default-focus" data-bi-name="body" style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><DIV class="columns " style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><SECTION class="primary-holder column is-two-thirds-tablet is-three-quarters-desktop" style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><DIV class="columns " style="display: block; float: none; position: relative; top: 0; left: 0; border: 0px; width: 100%; min-width:100%; max-width: 100%; min-height: auto; max-height: 100%; height: auto; padding: 0px; margin: 0px;"><div id="main-column" class="column is-full is-four-fifths-desktop mx-wc-selected-elem" style="float: none; position: relative; top: 0px; left: 0px; margin: 0px; flex: unset; width: 100%; max-width: 100%; box-sizing: border-box;">
+					
+					<main id="main" role="main" class="content" data-bi-name="content" lang="en-us" dir="ltr">
+
+
+
+						<h1 id="interactive-session" sourcefile="docs-ref-conceptual/hdinsightspark/hdinsight-spark-interactive-session.md" sourcestartlinenumber="9" sourceendlinenumber="9">Interactive session</h1>
+
+						<ul class="metadata page-metadata" data-bi-name="page info" lang="en-us" dir="ltr">
+							<li class="displayDate">
+								<time role="presentation" datetime="2016-11-16T00:00:00.000Z" data-article-date-source="ms.date">11/16/2016</time>
+							</li>
+								<li class="readingTime">
+									4 minutes to read
+								</li>
+							<li class="contributors-holder">
+								<span class="contributors-text">Contributors</span>
+								<ul class="contributors" data-bi-name="contributors">
+											<li><a href="https://github.com/JasonWHowell" title="Jason H" data-bi-name="contributorprofile"><img src="assets/1545821251-393254b1aff63c69375f4295fa621b3d.png" data-src="assets/1545821251-393254b1aff63c69375f4295fa621b3d.png" alt="Jason H"></a></li>
+											<li><a href="https://github.com/hellosnow" title="Huang Xueyuan(Jessie)" data-bi-name="contributorprofile"><img src="assets/1545821251-ad05565671430f1817ca729a8420ac0d.png" data-src="assets/1545821251-ad05565671430f1817ca729a8420ac0d.png" alt="Huang Xueyuan(Jessie)"></a></li>
+								</ul>
+							</li>
+
+						</ul>
+
+						
+
+
+
+						<!-- <content> -->
+							
+<h3 id="bk_common" class="heading-with-anchor"> Common parameters and headers</h3>
+<p> The following information is common to all tasks related to clusters that you might do:</p>
+<ul>
+<li><p>Replace {cluster-endpoint} with the url of your cluster’s management endpoint. (for example, myendpoint.azurehdinsight.net)  </p>
+</li>
+<li><p>Replace {session-id} with the session id returned on session startup.  </p>
+</li>
+<li><p>Set the Content-Type header to <strong>application/json</strong>.  </p>
+</li>
+<li><p>Authenticate with the endpoint using HTTP basic authentication.  </p>
+</li>
+</ul>
+<h2 id="create-a-new-interactive-session" class="heading-with-anchor">Create a new interactive session</h2>
+<p>Start a new interactive session.  </p>
+<h3 id="request" class="heading-with-anchor">Request</h3>
+<p> See <a href="#bk_common" data-linktype="self-bookmark">Common parameters and headers</a> for headers and parameters that are used by clusters.  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Request URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td><code>https://{cluster-endpoint}/livy/sessions</code></td>
+</tr>
+</tbody>
+</table></div>
+<p> Following shows an example request to create a new interactive session  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language"></span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code>{  
+    "kind" : "spark",  
+    "jars" : ["wasb://&lt;BlobStorageContainerName&gt;@&lt;StorageAccountName&gt;.blob.core.windows.net/helper.jar"],  
+    "files" : ["wasb://&lt;BlobStorageContainerName&gt;@&lt;StorageAccountName&gt;.blob.core.windows.net/config.xml"],  
+    "driverMemory" : "1G",  
+    "driverCores" : 2,  
+    "executorMemory" : "1G",  
+    "executorCores" : 10,  
+    "numExecutors" : 10  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kind</td>
+<td>Yes</td>
+<td>String</td>
+<td>The session kind. Possible values: [“spark”, “pyspark”, “sparkr”]</td>
+</tr>
+<tr>
+<td>proxyUser</td>
+<td>No</td>
+<td>String</td>
+<td>The user to impersonate that will execute the job</td>
+</tr>
+<tr>
+<td>jars</td>
+<td>No</td>
+<td>Array of String</td>
+<td>Files to be placed on the java classpath</td>
+</tr>
+<tr>
+<td>pyFiles</td>
+<td>No</td>
+<td>Array of String</td>
+<td>Files to be placed on the PYTHONPATH</td>
+</tr>
+<tr>
+<td>files</td>
+<td>No</td>
+<td>Array of String</td>
+<td>Files to be placed in executor working directory</td>
+</tr>
+<tr>
+<td>driverMemory</td>
+<td>No</td>
+<td>String</td>
+<td>Memory for driver (1000M, 2G)</td>
+</tr>
+<tr>
+<td>driverCores</td>
+<td>No</td>
+<td>Integer</td>
+<td>Number of cores used by driver</td>
+</tr>
+<tr>
+<td>executorMemory</td>
+<td>No</td>
+<td>String</td>
+<td>Memory for executor (1000M, 2G)</td>
+</tr>
+<tr>
+<td>executorCores</td>
+<td>No</td>
+<td>Integer</td>
+<td>Number of cores used by executor</td>
+</tr>
+<tr>
+<td>numExecutors</td>
+<td>No</td>
+<td>Integer</td>
+<td>Number of executors</td>
+</tr>
+<tr>
+<td>archives</td>
+<td>No</td>
+<td>Array of String</td>
+<td>Archives to be uncompressed (YARN mode only)</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response" class="heading-with-anchor">Response</h3>
+<p> The operation will return 200 (OK) if the request is completed successfully  </p>
+<p> <strong>Status code:</strong> 200 OK  </p>
+<p> <strong>Response body:</strong>  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language"></span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code>{  
+"id" : 1,  
+"state" : "starting",  
+"kind" : "spark",  
+“log" : ["logline"]  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>The interactive session id</td>
+</tr>
+<tr>
+<td>Kind</td>
+<td>Yes</td>
+<td>String</td>
+<td>The session kind. Possible values: [“spark”, “pyspark”, “sparkr”]</td>
+</tr>
+<tr>
+<td>log</td>
+<td>Yes</td>
+<td>Array of strings</td>
+<td>Array of log lines for this batch job.</td>
+</tr>
+<tr>
+<td>State</td>
+<td>Yes</td>
+<td>String</td>
+<td>The session state. Possible value: [“starting”, “idle”, “error”, “running”, “success”]</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="get-the-state-of-an-interactive-session" class="heading-with-anchor">Get the state of an interactive session</h2>
+<h3 id="request-1" class="heading-with-anchor">Request</h3>
+<p> See <a href="#bk_common" data-linktype="self-bookmark">Common parameters and headers</a> for headers and parameters that are used by clusters.  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Request URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>https://{cluster-endpoint}/livy/sessions/{session-id}</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response-1" class="heading-with-anchor">Response</h3>
+<p> If validation is complete and the request is accepted, the operation will return 200 (OK).  </p>
+<p> <strong>Status code:</strong> 200 OK  </p>
+<p> <strong>Response body:</strong>  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language"></span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code>{  
+"id" : 1,  
+"state" : "starting",  
+"kind" : "spark",  
+“log" : ["logline"]  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>The batch session id</td>
+</tr>
+<tr>
+<td>Kind</td>
+<td>Yes</td>
+<td>String</td>
+<td>The session kind. Possible values: [“spark”, “pyspark”, “sparkr”]</td>
+</tr>
+<tr>
+<td>log</td>
+<td>Yes</td>
+<td>Array of strings</td>
+<td>Array of log lines for this batch job.</td>
+</tr>
+<tr>
+<td>state</td>
+<td>Yes</td>
+<td>String</td>
+<td>The session state. Possible value: [“starting”, “idle”, “error”]</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="retrieve-statement-results-of-an-interactive-session" class="heading-with-anchor">Retrieve statement results of an interactive session</h2>
+<h3 id="request-2" class="heading-with-anchor">Request</h3>
+<p> See <a href="#bk_common" data-linktype="self-bookmark">Common parameters and headers</a> for headers and parameters that are used by clusters.  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Request URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>https://{cluster-endpoint}/livy/sessions/{session-id}/statements</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response-2" class="heading-with-anchor">Response</h3>
+<p> If validation is complete and the request is accepted, the operation will return 200 (OK).  </p>
+<p> <strong>Status code:</strong> 200 OK  </p>
+<p> <strong>Response body:</strong>  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language"></span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code>{  
+"total_statements" : 1,  
+"statements" : [{  
+            "id" : 0,  
+            "state" : "available",  
+            "output" : {  
+                "status" : "ok",  
+                "execution_count" : 1,  
+                "data" : {  
+                    "text/plain" : "res1: Int = 2"  
+                }  
+            }  
+        }  
+    ]  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total_statements</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>Total number of statements</td>
+</tr>
+<tr>
+<td>Statements</td>
+<td>Yes</td>
+<td>Array of complex Type (Statement)</td>
+<td>Output of statement</td>
+</tr>
+</tbody>
+</table></div>
+<p> <strong>Statement</strong>  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Id</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>The statement id</td>
+</tr>
+<tr>
+<td>State</td>
+<td>Yes</td>
+<td>String</td>
+<td>The statement state.</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>Yes</td>
+<td>Complex type (Output)</td>
+<td>The output of the statement.</td>
+</tr>
+</tbody>
+</table></div>
+<p> <strong>Output</strong>  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Status</td>
+<td>Yes</td>
+<td>String</td>
+<td>The statement status</td>
+</tr>
+<tr>
+<td>Execution_count</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>The number of executions</td>
+</tr>
+<tr>
+<td>data</td>
+<td>Yes</td>
+<td>Complex type (Text)</td>
+<td>The text output of the statement.</td>
+</tr>
+</tbody>
+</table></div>
+<p> <strong>Text</strong>  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Text/plain</td>
+<td>Yes</td>
+<td>String</td>
+<td>The plain text of the output</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="return-all-active-interactive-sessions" class="heading-with-anchor">Return all active interactive sessions</h2>
+<h3 id="request-3" class="heading-with-anchor">Request</h3>
+<p> See <a href="#bk_common" data-linktype="self-bookmark">Common parameters and headers</a> for headers and parameters that are used by clusters.  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Request URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>https://{cluster-endpoint}/livy/sessions</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response-3" class="heading-with-anchor">Response</h3>
+<p> If validation is complete and the request is accepted, the operation will return 200 (OK).  </p>
+<p> <strong>Status code:</strong> 200 OK  </p>
+<p> <strong>Response body:</strong>  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language"></span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code>{  
+    "from" : 0,  
+    "total" : 2,  
+    "sessions" : [{  
+            "id" : 1,  
+            "state" : "starting",  
+            "kind" : "spark",  
+            "log" : ["logline"]  
+        }, {  
+            "id" : 0,  
+            "state" : "idle",  
+            "kind" : "spark",  
+            "log" : ["logline"]  
+        }  
+    ]  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>from</td>
+<td>Yes</td>
+<td>String</td>
+<td>Offset</td>
+</tr>
+<tr>
+<td>total</td>
+<td>Yes</td>
+<td>String</td>
+<td>Number of sessions to return</td>
+</tr>
+<tr>
+<td>sessions</td>
+<td>Yes</td>
+<td>Array of Complex  Type (Session)</td>
+<td>A list of active sessions</td>
+</tr>
+</tbody>
+</table></div>
+<h4 id="session" class="heading-with-anchor">Session</h4>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>The interactive session id</td>
+</tr>
+<tr>
+<td>Kind</td>
+<td>Yes</td>
+<td>String</td>
+<td>The session kind. Possible values: [“spark”, “pyspark”, “sparkr”]</td>
+</tr>
+<tr>
+<td>log</td>
+<td>Yes</td>
+<td>Array of strings</td>
+<td>Array of log lines for this session.</td>
+</tr>
+<tr>
+<td>state</td>
+<td>Yes</td>
+<td>String</td>
+<td>The session state. Possible value: [“starting”, “idle”, “error”, “running”, “success”]</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="submit-statements-to-an-interactive-session" class="heading-with-anchor">Submit statement(s) to an interactive session</h2>
+<h3 id="request-4" class="heading-with-anchor">Request</h3>
+<p> See <a href="#bk_common" data-linktype="self-bookmark">Common parameters and headers</a> for headers and parameters that are used by clusters.  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Request URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td><code>https://{cluster-endpoint}/livy/sessions/{session-id}/statements</code></td>
+</tr>
+</tbody>
+</table></div>
+<p> Following shows an example request to create a new interactive session.  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language"></span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code>{  
+    "code" : "1 + 1"  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Code</td>
+<td>Yes</td>
+<td>String</td>
+<td>The code to execute</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response-4" class="heading-with-anchor">Response</h3>
+<p> If validation is complete and the request is accepted, the operation will return 200 (OK).  </p>
+<p> <strong>Status code:</strong> 200 OK  </p>
+<p> <strong>Response body:</strong>  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language"></span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code>{  
+"id" : 1,  
+"state" : "running",  
+"output" : null  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>Yes</td>
+<td>Integer</td>
+<td>The batch session id</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>Yes</td>
+<td>String</td>
+<td>Output of statement</td>
+</tr>
+<tr>
+<td>state</td>
+<td>Yes</td>
+<td>String</td>
+<td>The session state. Possible value: [“starting”, “idle”, “error”]</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="terminate-an-interactive-session" class="heading-with-anchor">Terminate an interactive session</h2>
+<h3 id="request-5" class="heading-with-anchor">Request</h3>
+<p> See <a href="#bk_common" data-linktype="self-bookmark">Common parameters and headers</a> for headers and parameters that are used by clusters.  </p>
+<div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Request URI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DELETE</td>
+<td><code>https://{cluster-endpoint}/livy/sessions/{session-id}</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="response-5" class="heading-with-anchor">Response</h3>
+<p> If validation is complete and the request is accepted, the operation will return 200 (OK).  </p>
+<p> <strong>Status code:</strong> 200 OK  </p>
+<p> <strong>Response body:</strong>  </p>
+<div class="codeHeader" data-bi-name="code-header"><span class="language"></span>
+			<button class="action" data-bi-name="copy">
+				<span class="docon docon-edit-copy" role="presentation"></span>
+				<span>Copy</span>
+			</button></div><pre><code>{  
+"msg" : "deleted"  
+}  
+</code></pre><div class="table-scroll-wrapper"><table>
+<thead>
+<tr>
+<th>Element name</th>
+<th>Required</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Message</td>
+<td>Yes</td>
+<td>String</td>
+<td>The message of the delete.</td>
+</tr>
+</tbody>
+</table></div>
+
+						<!-- </content> -->
+							
+						</main>
+  </body>
+</html>
